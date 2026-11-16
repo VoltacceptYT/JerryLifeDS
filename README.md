@@ -25,7 +25,7 @@ Locally: `python3 tools/convert_assets.py` (Pillow), `python3 tools/convert_musi
 
 - `tools/convert_assets.py` regenerates `source/gfxdata.*`, `source/atlasdata.*`, `source/itemdata.*`, `assets/gen/atlas.bin` and `icon.bmp` from `assets/` (sprites come from `assets/jerrylife/atlas_*.png` + `manifest.json`).
 - `tools/convert_music.py` turns `assets/music/JerryUnited.mp3` into DS IMA-ADPCM (`source/music_data.s` embeds it).
-- `tools/convert_sfx.py` turns `assets/sfx/jerry_click.ogg` into 8-bit PCM (`source/clickdata.c`; the workflow regenerates it, run it locally too if you change the sound). It plays when a resident is clicked.
+- `tools/convert_sfx.py` turns every `assets/sfx/jerry_*.ogg` into 8-bit PCM (`source/sfxdata.c`; the workflow regenerates it, run it locally too if you change a sound). Sounds come in families (`jerry_yes1/2/3.ogg`, ...) and a random one plays: `levelup` (level up, move in, couple), `click` (select a resident), `yes` (liked/loved food, gift or toy), `no` (refused food, arguments, can't-do-that), `haggle` (shopping), `hit` (kicking a toy), `idle` (chatting). The coin/heart/pop blips remain PSG tones.
 
 ## Host tests (no DS needed)
 ```
@@ -40,7 +40,7 @@ python3 tools/host/dump2png.py /tmp/ui.raw /tmp/ui.png
 `font10` / `font14` are rasterised from `JerrifiedPixels.ttf` (capitals only; used for buttons and headers). `fontsm` is a hand-drawn small font with real lowercase letters, defined in `tools/smallfont.py` (run `python3 tools/smallfont.py preview.png` for a preview sheet). Edit the ASCII art there and re-run `tools/convert_assets.py`.
 
 ## Layout
-`jl.c` simulation + save format | `map.c` terrain/buildings | `world.c` world renderer | `ui.c` panels | `sprites.c`/`gfx.c` drawing | `main.c` DS glue (video, input, saving) | `sfx.c` sound effects (PSG blips + Jerry click sample) | `audio.c` music
+`jl.c` simulation + save format | `map.c` terrain/buildings | `world.c` world renderer | `ui.c` panels | `sprites.c`/`gfx.c` drawing | `main.c` DS glue (video, input, saving) | `sfx.c` sound effects (PSG blips + Jerry samples) | `audio.c` music
 
 ## Credits
 Game: VoltacceptYT | Music: VO!DWiNG | Built on the JerryClickerDS toolchain

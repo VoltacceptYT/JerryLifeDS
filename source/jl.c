@@ -303,7 +303,7 @@ bool jl_feed(Jerry *j, int id) {
     const FoodDef *f = &FOODS[id];
     if (j->hunger > 93 && f->taste != TASTE_GROSS) {
         say(j, "I'm stuffed!", 2.5f);
-        sfx_play(SFX_BAD);
+        sfx_play(SFX_NO);
         return false;
     }
     jl.foods[id]--;
@@ -313,9 +313,9 @@ bool jl_feed(Jerry *j, int id) {
     j->st = ST_EAT;
     j->t = 1.6f;
     j->held = -1;
-    if (v.v == V_LOVE) { hearts(j, 6); sfx_play(SFX_HEART); }
-    else if (v.v == V_LIKE) { hearts(j, 2); sfx_play(SFX_POP); }
-    else if (v.v == V_GROSS) { sfx_play(SFX_BAD); add_part(PK_ANGRY, j->x, j->y - 34, 0, -12, 1.5f, 0); }
+    if (v.v == V_LOVE) { hearts(j, 6); sfx_play(SFX_YES); }
+    else if (v.v == V_LIKE) { hearts(j, 2); sfx_play(SFX_YES); }
+    else if (v.v == V_GROSS) { sfx_play(SFX_NO); add_part(PK_ANGRY, j->x, j->y - 34, 0, -12, 1.5f, 0); }
     else sfx_play(SFX_POP);
     gain(j, v.joy, maxi(0, v.joy) + 4);
     if (j->conType == CON_WANT_FOOD && j->conId == id) solve(j, 40);
@@ -331,8 +331,8 @@ bool jl_give(Jerry *j, int id) {
     j->st = ST_EAT;
     j->t = 1.4f;
     j->held = id;
-    if (v.v == V_LOVE) { hearts(j, 7); sfx_play(SFX_HEART); }
-    else if (v.v == V_LIKE) { hearts(j, 3); sfx_play(SFX_POP); }
+    if (v.v == V_LOVE) { hearts(j, 7); sfx_play(SFX_YES); }
+    else if (v.v == V_LIKE) { hearts(j, 3); sfx_play(SFX_YES); }
     else sfx_play(SFX_POP);
     int extra = (int)floorf(g->price / 40.0f + 0.5f);
     if (g->cat == CAT_CHARM) {
@@ -357,7 +357,7 @@ bool jl_give_toy(Jerry *j, int toy) {
     static const char *const L[3] = {"A toy! Let's play!", "Yay, playtime!", "Whee!"};
     say(j, L[RI(0, 2)], 3);
     hearts(j, 3);
-    sfx_play(SFX_HEART);
+    sfx_play(SFX_YES);
     j->st = ST_PLAY;
     j->t = 6;
     j->toy = toy;
@@ -373,7 +373,7 @@ void jl_talk(Jerry *j) {
     j->t = 2;
     say(j, pick_line(j->pers), 3);
     gain(j, 3, 4);
-    sfx_play(SFX_POP);
+    sfx_play(SFX_IDLE);
     if (j->angry) { j->angry = false; j->ang = 0; say(j, "Okay... I feel better.", 3); }
 }
 
@@ -383,14 +383,14 @@ bool jl_buy_food(int i) {
     if (i < 0 || i >= FOOD_COUNT || jl.coins < FOODS[i].price || jl.foods[i] >= 99) return false;
     jl.coins -= FOODS[i].price;
     jl.foods[i]++;
-    sfx_play(SFX_COIN);
+    sfx_play(SFX_HAGGLE);
     return true;
 }
 bool jl_buy_gift(int i) {
     if (i < 0 || i >= GIFT_COUNT || jl.coins < GIFTS[i].price || jl.gifts[i] >= 99) return false;
     jl.coins -= GIFTS[i].price;
     jl.gifts[i]++;
-    sfx_play(SFX_COIN);
+    sfx_play(SFX_HAGGLE);
     return true;
 }
 
@@ -405,7 +405,7 @@ bool jl_buy_toy(int i) {
     jl.coins -= TOYS[i].price;
     jl.toysOwned[i] = 1;
     spawn_toy(i);
-    sfx_play(SFX_COIN);
+    sfx_play(SFX_HAGGLE);
     return true;
 }
 int jl_toy_count(void) {
@@ -597,7 +597,7 @@ void jl_kick_toy(int ti, float mx, float my) {
     t->vx = cosf(a) * 120;
     t->vy = sinf(a) * 120;
     t->hop = 1;
-    sfx_play(SFX_POP);
+    sfx_play(SFX_HIT);
     if (ti == TOY_WHITE_DICE) roll_dice(t);
 }
 
@@ -670,7 +670,7 @@ static void social(Jerry *a, Jerry *b, bool force) {
         a->st = b->st = ST_CHAT;
         emote(a, EM_ANGRY, 3);
         emote(b, EM_ANGRY, 3);
-        sfx_play(SFX_BAD);
+        sfx_play(SFX_NO);
         jl_note("%s and %s had an argument!", a->name, b->name);
     } else {
         say(a, pick_line(a->pers), 2.8f);

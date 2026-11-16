@@ -85,7 +85,7 @@ static void go(int mode) {
 static void say_msg(const char *m, bool bad) {
     snprintf(U.msg, sizeof U.msg, "%s", m);
     U.msgT = 150;
-    if (bad) sfx_play(SFX_BAD);
+    if (bad) sfx_play(SFX_NO);
     U.dirty = true;
 }
 

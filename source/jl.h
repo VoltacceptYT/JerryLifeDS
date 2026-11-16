@@ -116,7 +116,17 @@ typedef struct {
 
 extern JL jl;
 
-enum { SFX_POP, SFX_COIN, SFX_HEART, SFX_BAD, SFX_LEVEL, SFX_CLICK }; // SFX_CLICK = sampled jerry_click
+// SFX_POP..SFX_BAD are PSG blips; the rest are Jerry samples (assets/sfx/jerry_*.ogg, a random variant
+// of the family: yes1/yes2/yes3 ...).
+enum { SFX_POP, SFX_COIN, SFX_HEART, SFX_BAD,
+       SFX_LEVEL,   // levelup: level ups, moving in, becoming a couple
+       SFX_CLICK,   // click: selecting a resident
+       SFX_YES,     // yes1-3: liked/loved food, gift or toy
+       SFX_NO,      // no1-3: refused/gross food, arguments, can't do that
+       SFX_HAGGLE,  // haggle1,3: buying food, gifts and toys
+       SFX_HIT,     // hit1-4: kicking a toy
+       SFX_IDLE,    // idle1-3: chatting with a resident
+       SFX_KINDS };
 void sfx_play(int kind); // implemented by the platform (sfx.c / host stub)
 
 // ----- lifecycle -----
