@@ -1,4 +1,4 @@
-// Tiny sound effects: short square-wave blips on the DS PSG voices (no sample data needed).
+// Sound effects: short square-wave blips on the DS PSG voices, plus the sampled Jerry click.
 #ifndef SFX_H
 #include <stdbool.h>
 #define SFX_H

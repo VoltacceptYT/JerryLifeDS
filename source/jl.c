@@ -936,7 +936,6 @@ void jl_select(Jerry *j) {  // clicking a resident in the web game: select, look
     j->t = fmaxf(j->t, 1.2f);
     if (!j->inside && (j->st == ST_WALK || j->st == ST_IDLE)) { j->st = ST_TALK; j->t = 1.2f; }
     hearts(j, 1);
-    sfx_play(SFX_POP);
 }
 
 int jl_friend_count(void) {

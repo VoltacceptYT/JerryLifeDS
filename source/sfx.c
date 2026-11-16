@@ -1,6 +1,7 @@
 // Sound effects for Jerry Life: sfx_play() (declared in jl.h) is implemented here for the DS.
-// Each effect is up to three notes; one PSG voice plays them back to back. The music keeps its
-// own ADPCM voice (audio.c), so effects never interrupt it.
+// Most effects are up to three notes; one PSG voice plays them back to back. SFX_CLICK is the
+// sampled Jerry click (assets/sfx/jerry_click.ogg -> clickdata.c, see tools/convert_sfx.py) on its
+// own hardware voice. The music keeps its own ADPCM voice (audio.c), so effects never interrupt it.
 #include <nds.h>
 #include <stdbool.h>
 

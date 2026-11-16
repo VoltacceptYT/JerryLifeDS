@@ -40,7 +40,7 @@ python3 tools/host/dump2png.py /tmp/ui.raw /tmp/ui.png
 `font10` / `font14` are rasterised from `JerrifiedPixels.ttf` (capitals only; used for buttons and headers). `fontsm` is a hand-drawn small font with real lowercase letters, defined in `tools/smallfont.py` (run `python3 tools/smallfont.py preview.png` for a preview sheet). Edit the ASCII art there and re-run `tools/convert_assets.py`.
 
 ## Layout
-`jl.c` simulation + save format | `map.c` terrain/buildings | `world.c` world renderer | `ui.c` panels | `sprites.c`/`gfx.c` drawing | `main.c` DS glue (video, input, saving) | `sfx.c` PSG sound effects | `audio.c` music
+`jl.c` simulation + save format | `map.c` terrain/buildings | `world.c` world renderer | `ui.c` panels | `sprites.c`/`gfx.c` drawing | `main.c` DS glue (video, input, saving) | `sfx.c` sound effects (PSG blips + Jerry click sample) | `audio.c` music
 
 ## Credits
 Game: VoltacceptYT | Music: VO!DWiNG | Built on the JerryClickerDS toolchain
