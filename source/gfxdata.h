@@ -3,7 +3,7 @@
 #define GFXDATA_H
 #include <stdint.h>
 typedef struct { const uint16_t *rows; const uint8_t *adv; int height; } Font;
-extern const Font font8;
+extern const Font fontsm;
 extern const Font font10;
 extern const Font font14;
 extern const uint16_t tex_stone[256];

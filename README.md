@@ -29,9 +29,12 @@ Locally: `python3 tools/convert_assets.py` (Pillow), `python3 tools/convert_musi
 ## Host tests (no DS needed)
 ```
 sh tools/host/build_host.sh tools/host/world_test.c /tmp/wt && /tmp/wt   # world render -> /tmp/world.raw
-sh tools/host/build_host.sh tools/host/ui_test.c    /tmp/ut && /tmp/ut   # UI + save round-trip -> /tmp/ui.raw
+EXTRA=source/ui.c sh tools/host/build_host.sh tools/host/ui_test.c /tmp/ut && /tmp/ut   # UI + save round-trip -> /tmp/ui.raw
 python3 tools/host/dump2png.py /tmp/ui.raw /tmp/ui.png
 ```
+
+## Fonts
+`font10` / `font14` are rasterised from `JerrifiedPixels.ttf` (capitals only; used for buttons and headers). `fontsm` is a hand-drawn small font with real lowercase letters, defined in `tools/smallfont.py` (run `python3 tools/smallfont.py preview.png` for a preview sheet). Edit the ASCII art there and re-run `tools/convert_assets.py`.
 
 ## Layout
 `jl.c` simulation + save format | `map.c` terrain/buildings | `world.c` world renderer | `ui.c` panels | `sprites.c`/`gfx.c` drawing | `main.c` DS glue (video, input, saving) | `sfx.c` PSG sound effects | `audio.c` music

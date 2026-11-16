@@ -14,7 +14,9 @@ Sprite format: every sprite has its own palette (<= 254 ARGB1555 colours). Pixel
 1..n = palette[n-1], 255 = soft shadow (darkens whatever is underneath).
 Sprites come from assets/jerrylife/atlas_small.png and atlas_build.png (rects in manifest.json).
 """
-import json, os, struct
+import json, os, struct, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import smallfont
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -69,7 +71,8 @@ def write(path, text):
 # Fonts (rasterised from JerrifiedPixels.ttf) and UI textures
 # ---------------------------------------------------------------------------
 FONT = os.path.join(A, "JerrifiedPixels.ttf")
-FONT_SIZES = {"font8": 8, "font10": 10, "font14": 14}
+FONT_SIZES = {"font10": 10, "font14": 14}   # rasterised from JerrifiedPixels.ttf (capitals only)
+# "fontsm": the small font with lowercase is hand-drawn in tools/smallfont.py
 
 
 def font_data(size):
@@ -119,8 +122,8 @@ def make_gfxdata():
     out = [GENERATED, '#include "gfxdata.h"', ""]
     hdr = [GENERATED, "#ifndef GFXDATA_H", "#define GFXDATA_H", "#include <stdint.h>",
            "typedef struct { const uint16_t *rows; const uint8_t *adv; int height; } Font;"]
-    for name, size in FONT_SIZES.items():
-        h, rows, adv = font_data(size)
+    fonts = [("fontsm",) + smallfont.font_data()] + [(n,) + font_data(sz) for n, sz in FONT_SIZES.items()]
+    for name, h, rows, adv in fonts:
         out.append("static const uint16_t %s_rows[95 * %d] = {%s};" % (
             name, h, ",".join(str(v) for r in rows for v in r)))
         out.append("static const uint8_t %s_adv[95] = {%s};" % (name, ",".join(map(str, adv))))
@@ -312,12 +315,36 @@ def make_items(man, sprid):
     write(os.path.join(SRC, "itemdata.c"), "\n".join(out) + "\n")
 
 
+SEQUEL_DIGIT = ["###", "..#", "###", "#..", "###"]  # the "2" of Jerry Clicker 2 / Jerry Life
+
+
+def add_sequel_badge(im):
+    """Stamps a gold "2" with a dark outline in the bottom-right corner of the 32x32 icon."""
+    gold, edge = (255, 205, 40, 255), (40, 24, 8, 255)
+    im = im.copy()
+    S = 2
+    w, h = 3 * S, 5 * S
+    ox, oy = 32 - w - 2, 32 - h - 2           # top-left of the digit, 1 px outline + 1 px margin
+    ink = {(ox + x * S + dx, oy + y * S + dy)
+           for y, row in enumerate(SEQUEL_DIGIT) for x, c in enumerate(row) if c == "#"
+           for dx in range(S) for dy in range(S)}
+    for (x, y) in ink:
+        for ex in (-1, 0, 1):
+            for ey in (-1, 0, 1):
+                if (x + ex, y + ey) not in ink:
+                    im.putpixel((x + ex, y + ey), edge)
+    for (x, y) in ink:
+        im.putpixel((x, y), gold)
+    return im
+
+
 def make_icon(man):
     """32x32 4bpp BMP for the ROM banner, from the classic Jerry skin."""
     r = man["atlas"]["skin_jerry"]
     sheet = load(os.path.join(A, "jerrylife", "atlas_small.png"))
     base = scale(sheet.crop((r[0], r[1], r[0] + r[2], r[1] + r[3])), 2)
     assert base.size == (32, 32)
+    base = add_sequel_badge(base)
     cols = []
     for p in pixels(base):
         if p[3] >= 128 and p[:3] not in cols:

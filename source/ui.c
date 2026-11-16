@@ -64,10 +64,10 @@ static Btn btns[110];
 static int nbtn;
 static List lst;
 
-static const char *const SEASON_NAMES[4] = {"SPRING", "SUMMER", "FALL", "WINTER"};
-static const char *const SEASON_MODE[5] = {"AUTO", "SPRING", "SUMMER", "FALL", "WINTER"};
-static const char *const TIME_MODE[TIME_MODES] = {"AUTO", "MORNING", "DAY", "EVENING", "NIGHT"};
-static const char *const TASTE_TAB[5] = {"SWEET", "SAVORY", "SPICY", "DRINK", "GROSS"};
+static const char *const SEASON_NAMES[4] = {"Spring", "Summer", "Fall", "Winter"};
+static const char *const SEASON_MODE[5] = {"Auto", "Spring", "Summer", "Fall", "Winter"};
+static const char *const TIME_MODE[TIME_MODES] = {"Auto", "Morning", "Day", "Evening", "Night"};
+static const char *const TASTE_TAB[5] = {"Sweet", "Savory", "Spicy", "Drink", "Gross"};
 
 /* ================================================================ small helpers */
 
@@ -187,7 +187,7 @@ static void panel(Canvas *c, int x, int y, int w, int h) {
     gfx_bevel_panel(c, x, y, w, h, RGB8(34, 34, 34), RGB8(85, 85, 85), RGB8(0, 0, 0));
 }
 
-static void T8(Canvas *c, int x, int y, const char *s, px col) { gfx_text(c, &font8, x, y, s, col, 1); }
+static void T8(Canvas *c, int x, int y, const char *s, px col) { gfx_text(c, &fontsm, x, y, s, col, 1); }
 static void T10(Canvas *c, int x, int y, const char *s, px col) { gfx_text(c, &font10, x, y, s, col, 1); }
 
 static const char *const B_COIN[5] = {".oyyo.", "oyyyyo", "oyoyyo", "oyyyyo", ".oyyo."};
@@ -233,7 +233,7 @@ static void button(Canvas *c, int id, int x, int y, int w, int h, const char *la
 }
 
 static void footer(Canvas *c, const char *hint) {
-    button(c, ID_BACK, 4, 166, 80, 24, "BACK", BS_CANCEL, true);
+    button(c, ID_BACK, 4, 166, 80, 24, "Back", BS_CANCEL, true);
     if (U.msgT > 0) T8(c, 92, 174, U.msg, C_GOLD);
     else if (hint) T8(c, 92, 174, hint, C_DIM);
 }
@@ -244,7 +244,7 @@ static void tabs(Canvas *c, const char *const *labels, int n, int y) {
         int x = 4 + i * w;
         bool on = i == U.tab, pr = U.pressed == ID_TAB + i;
         gfx_nineslice(c, (on || pr) ? tex_button_active : tex_button, x, y, w - 2, 15);
-        gfx_text_centered(c, &font8, x + (w - 2) / 2, y + 4 + (on ? 1 : 0), labels[i], on ? C_GOLD : C_WHITE, 1);
+        gfx_text_centered(c, &fontsm, x + (w - 2) / 2, y + 4 + (on ? 1 : 0), labels[i], on ? C_GOLD : C_WHITE, 1);
         reg(ID_TAB + i, x, y, w - 2, 15, false);
         focus_ring(c, ID_TAB + i, x, y, w - 2, 15);
     }
@@ -282,7 +282,7 @@ static bool list_visible(int i) {
 static void list_end(Canvas *c, const char *emptyMsg) {
     gfx_unclip(c);
     if (lst.count == 0 && emptyMsg) {
-        gfx_text_centered(c, &font8, lst.x + lst.w / 2, lst.y + lst.h / 2 - 4, emptyMsg, C_DIM, 1);
+        gfx_text_centered(c, &fontsm, lst.x + lst.w / 2, lst.y + lst.h / 2 - 4, emptyMsg, C_DIM, 1);
         return;
     }
     int total = lst.count * lst.rowH;
@@ -329,11 +329,11 @@ static int wrap(const char *s, int maxChars, char lines[][48], int maxLines) {
 
 static void verdict_tag(int v, const char **t, px *col) {
     switch (v) {
-    case V_LOVE: *t = "LOVES IT"; *col = C_GOLD; break;
-    case V_LIKE: *t = "LIKES"; *col = C_GREEN; break;
+    case V_LOVE: *t = "Loves it"; *col = C_GOLD; break;
+    case V_LIKE: *t = "Likes"; *col = C_GREEN; break;
     case V_OK: *t = "OK"; *col = C_WHITE; break;
-    case V_DISLIKE: *t = "MEH"; *col = C_ORANGE; break;
-    default: *t = "YUCK"; *col = C_RED; break;
+    case V_DISLIKE: *t = "Meh"; *col = C_ORANGE; break;
+    default: *t = "Yuck"; *col = C_RED; break;
     }
 }
 
@@ -382,14 +382,14 @@ static void interact(Hit h, float wx, float wy) {
 static const char *hint_for(Hit h, char *buf, size_t n) {
     switch (h.kind) {
     case HIT_JERRY: snprintf(buf, n, "A: %s", jl.jerries[h.index].name); return buf;
-    case HIT_SPARK: return "A: COLLECT";
-    case HIT_TOY: return "A: KICK";
+    case HIT_SPARK: return "A: Collect";
+    case HIT_TOY: return "A: Kick";
     case HIT_BUILDING: {
         const Building *b = &map_buildings[h.index];
         if (b->type == BT_HOUSE) {
             const Jerry *ow = house_owner(b);
-            if (ow) snprintf(buf, n, "A: %s'S HOME", ow->name);
-            else snprintf(buf, n, "A: VACANT HOME");
+            if (ow) snprintf(buf, n, "A: %s's home", ow->name);
+            else snprintf(buf, n, "A: Vacant home");
         } else snprintf(buf, n, "A: %s", b->name);
         return buf;
     }
@@ -470,26 +470,26 @@ static void act(int id) {
             bool ok;
             if (U.shopKind == 0) ok = jl_buy_food(it);
             else if (U.tab == 0) {
-                if (jl.toysOwned[it]) { say_msg("YOU ALREADY OWN THIS", true); break; }
+                if (jl.toysOwned[it]) { say_msg("You already own this", true); break; }
                 ok = jl_buy_toy(it);
             } else ok = jl_buy_gift(it);
             if (!ok) {
                 int price = U.shopKind == 0 ? FOODS[it].price : U.tab == 0 ? TOYS[it].price : GIFTS[it].price;
-                say_msg(jl.coins < price ? "NOT ENOUGH COINS" : "BAG FULL (99)", true);
+                say_msg(jl.coins < price ? "Not enough coins" : "Bag full (99)", true);
             }
         }
         break;
 
     case M_HALL:
         if (id == ID_CREATE) {
-            if (jl_free_houses() == 0) say_msg("NO FREE HOUSE: BUILD ONE", true);
-            else if (jl.nJerries >= MAX_JERRIES) say_msg("THE ISLAND IS FULL", true);
-            else if (jl.coins < jl_create_cost()) say_msg("NOT ENOUGH COINS", true);
+            if (jl_free_houses() == 0) say_msg("No free house: build one", true);
+            else if (jl.nJerries >= MAX_JERRIES) say_msg("The island is full", true);
+            else if (jl.coins < jl_create_cost()) say_msg("Not enough coins", true);
             else open_create(false, true);
         } else if (id == ID_BUILD) {
             int hc = jl_house_cost();
-            if (hc < 0) say_msg("ALL LOTS ARE BUILT", true);
-            else if (!jl_build_house()) say_msg("NOT ENOUGH COINS", true);
+            if (hc < 0) say_msg("All lots are built", true);
+            else if (!jl_build_house()) say_msg("Not enough coins", true);
             else plat_save_now();
         } else if (id >= ID_ROW && id - ID_ROW < jl.nJerries) {
             select_jerry(&jl.jerries[id - ID_ROW], true);
@@ -504,9 +504,9 @@ static void act(int id) {
         else if (id >= ID_SKIN && id < ID_SKIN + SKIN_COUNT) U.skin = id - ID_SKIN;
         else if (id >= ID_PERS && id < ID_PERS + PERS_COUNT) U.pers = id - ID_PERS;
         else if (id == ID_GO) {
-            if (jl.coins < jl_create_cost()) { say_msg("NOT ENOUGH COINS", true); break; }
+            if (jl.coins < jl_create_cost()) { say_msg("Not enough coins", true); break; }
             Jerry *j = jl_create_jerry(U.name, U.skin, U.pers);
-            if (!j) { say_msg("NO FREE HOUSE", true); break; }
+            if (!j) { say_msg("No free house", true); break; }
             U.first = false;
             plat_save_now();
             select_jerry(j, false);
@@ -728,9 +728,9 @@ void ui_draw_top(px *fb) {
     daycycle_time_string(a, sizeof a);
     char b[64];
     snprintf(b, sizeof b, "%s %s", SEASON_NAMES[jl.season & 3], a);
-    gfx_text_centered(&c, &font8, 128, 3, b, C_WHITE, 1);
-    snprintf(a, sizeof a, "%d RESIDENT%s", jl.nJerries, jl.nJerries == 1 ? "" : "S");
-    gfx_text_right(&c, &font8, 252, 3, a, C_WHITE, 1);
+    gfx_text_centered(&c, &fontsm, 128, 3, b, C_WHITE, 1);
+    snprintf(a, sizeof a, "%d resident%s", jl.nJerries, jl.nJerries == 1 ? "" : "s");
+    gfx_text_right(&c, &fontsm, 252, 3, a, C_WHITE, 1);
 
     // crosshair + what A would do
     if (U.mode == M_MAP) {
@@ -746,9 +746,9 @@ void ui_draw_top(px *fb) {
         char buf[48];
         const char *hint = hint_for(find_hit((float)(U.camX + 128), (float)(U.camY + 96), 0), buf, sizeof buf);
         if (hint) {
-            int tw = gfx_text_width(&font8, hint);
+            int tw = gfx_text_width(&fontsm, hint);
             fx_shade_rect(&c, 128 - tw / 2 - 3, 14, tw + 6, 11);
-            gfx_text_centered(&c, &font8, 128, 16, hint, C_GOLD, 1);
+            gfx_text_centered(&c, &fontsm, 128, 16, hint, C_GOLD, 1);
         }
     }
 
@@ -756,7 +756,7 @@ void ui_draw_top(px *fb) {
     int row = 0;
     for (int i = 0; i < MAX_TOASTS; i++) {
         if (jl.toastTtl[i] <= 0) continue;
-        int w = gfx_text_width(&font8, jl.toast[i]);
+        int w = gfx_text_width(&fontsm, jl.toast[i]);
         int y = SCREEN_H - 11 * (row + 1);
         fx_shade_rect(&c, 1, y - 1, w + 6, 10);
         T8(&c, 4, y + 1, jl.toast[i], C_WHITE);
@@ -789,7 +789,7 @@ static void screen_map(Canvas *c) {
     draw_minimap(c);
     gfx_fill(c, 0, MM_H, SCREEN_W, SCREEN_H - MM_H, RGB8(0, 0, 0));
     gfx_tile(c, tex_stone, 0, MM_H + 1, SCREEN_W, SCREEN_H - MM_H - 1);
-    static const struct { int id; const char *l; } B[4] = {{ID_NEWS, "NEWS"}, {ID_RES, "JERRIES"}, {ID_ITEMS, "ITEMS"}, {ID_MENU, "MENU"}};
+    static const struct { int id; const char *l; } B[4] = {{ID_NEWS, "News"}, {ID_RES, "Jerries"}, {ID_ITEMS, "Items"}, {ID_MENU, "Menu"}};
     for (int i = 0; i < 4; i++) button(c, B[i].id, 4 + i * 63, 164, 60, 24, B[i].l, BS_NORMAL, true);
 }
 
@@ -805,17 +805,17 @@ static void screen_jerry(Canvas *c) {
     gfx_bevel_panel(c, 6, 22, 36, 36, RGB8(26, 26, 26), RGB8(0, 0, 0), RGB8(85, 85, 85));
     spr_draw(c, SKINS[j->skin].spr, 6 + 2 + 14, 22 + 2 + 30, 2, false, false);
 
-    static const char *const L[3] = {"HUNGER", "JOY", "XP"};
+    static const char *const L[3] = {"Hunger", "Joy", "XP"};
     float v[3] = {j->hunger, j->joy, (float)j->xp / (float)j->lvl};
     px col[3] = {RGB8(232, 163, 58), RGB8(255, 122, 168), RGB8(111, 214, 255)};
     for (int i = 0; i < 3; i++) {
         int y = 22 + i * 12;
         T8(c, 50, y + 1, L[i], C_DIM);
         bar(c, 92, y, 120, 8, v[i], col[i]);
-        if (i < 2) { snprintf(a, sizeof a, "%d", (int)v[i]); gfx_text_right(c, &font8, 250, y + 1, a, C_WHITE, 1); }
+        if (i < 2) { snprintf(a, sizeof a, "%d", (int)v[i]); gfx_text_right(c, &fontsm, 250, y + 1, a, C_WHITE, 1); }
     }
 
-    T8(c, 6, 66, "LOVES", C_DIM);
+    T8(c, 6, 66, "Loves", C_DIM);
     spr_icon(c, FOODS[j->fav].spr, 40, 62);
     T8(c, 60, 66, FOODS[j->fav].name, C_WHITE);
     spr_icon(c, GIFTS[j->favGift].spr, 40, 80);
@@ -832,11 +832,11 @@ static void screen_jerry(Canvas *c) {
         int n = wrap(text, 41, lines, 2);
         for (int i = 0; i < n; i++) T8(c, 28, 103 + i * 10, lines[i], C_GOLD);
     } else {
-        T8(c, 10, 108, "NOTHING ON THEIR MIND.", C_DIM);
+        T8(c, 10, 108, "Nothing on their mind.", C_DIM);
     }
 
     const Jerry *lover = j->lover ? jl_jerry(j->lover) : NULL;
-    if (lover) { fx_heart(c, 9, 131, C_PINK); snprintf(a, sizeof a, "PARTNER: %s", lover->name); T8(c, 16, 128, a, C_PINK); }
+    if (lover) { fx_heart(c, 9, 131, C_PINK); snprintf(a, sizeof a, "Partner: %s", lover->name); T8(c, 16, 128, a, C_PINK); }
     int fr[3], fv[3], nf = 0;
     for (int i = 0; i < jl.nJerries; i++) {
         const Jerry *o = &jl.jerries[i];
@@ -849,13 +849,13 @@ static void screen_jerry(Canvas *c) {
         fr[k] = i; fv[k] = rv;
     }
     if (nf) {
-        strcpy(a, "FRIENDS: ");
+        strcpy(a, "Friends: ");
         for (int i = 0; i < nf; i++) { strcat(a, jl.jerries[fr[i]].name); if (i + 1 < nf) strcat(a, ", "); }
         T8(c, 6, 138, a, C_DIM);
     }
 
-    static const struct { int id; const char *l; } B[6] = {{ID_FEED, "FEED"}, {ID_GIFT, "GIFT"}, {ID_TALK, "TALK"},
-                                                           {ID_HANG, "HANG OUT"}, {ID_MOVEOUT, "MOVE OUT"}, {ID_CLOSE, "CLOSE"}};
+    static const struct { int id; const char *l; } B[6] = {{ID_FEED, "Feed"}, {ID_GIFT, "Gift"}, {ID_TALK, "Talk"},
+                                                           {ID_HANG, "Hang out"}, {ID_MOVEOUT, "Move out"}, {ID_CLOSE, "Close"}};
     for (int i = 0; i < 6; i++) {
         int st = B[i].id == ID_MOVEOUT || B[i].id == ID_CLOSE ? BS_CANCEL : (i < 3 ? BS_OK : BS_NORMAL);
         button(c, B[i].id, 4 + (i % 3) * 84, i < 3 ? 148 : 169, 80, 20, B[i].l, st, true);
@@ -868,7 +868,7 @@ static void screen_pick(Canvas *c) {
     int items[64];
     int n = U.pickKind == 0 ? owned_foods(items) : owned_gifts(items);
     char a[64];
-    snprintf(a, sizeof a, "%s %s", U.pickKind == 0 ? "FEED" : "GIFT FOR", j->name);
+    snprintf(a, sizeof a, "%s %s", U.pickKind == 0 ? "Feed" : "Gift for", j->name);
     header(c, a, false);
     list_begin(c, 4, 20, 248, 142, 20, n);
     for (int i = 0; i < n; i++) {
@@ -889,24 +889,24 @@ static void screen_pick(Canvas *c) {
         int y = list_row_y(i);
         spr_icon(c, spr, 8, y + 2);
         T8(c, 28, y + 3, name, C_WHITE);
-        if (toy) T8(c, 28, y + 11, "TOY - PLAY TOGETHER", C_CYAN);
+        if (toy) T8(c, 28, y + 11, "Toy - play together", C_CYAN);
         else {
             snprintf(a, sizeof a, "X%d", count);
             T8(c, 28, y + 11, a, C_DIM);
             const char *t; px col;
             verdict_tag(v, &t, &col);
-            if (wanted) { t = "WANTED!"; col = C_GOLD; }
-            gfx_text_right(c, &font8, 232, y + 11, t, col, 1);
+            if (wanted) { t = "Wanted!"; col = C_GOLD; }
+            gfx_text_right(c, &fontsm, 232, y + 11, t, col, 1);
         }
     }
-    list_end(c, U.pickKind == 0 ? "NOTHING IN YOUR BAG. VISIT THE CAFE!" : "NOTHING IN YOUR BAG. VISIT THE TOY STORE!");
-    footer(c, "TAP AN ITEM");
+    list_end(c, U.pickKind == 0 ? "Nothing in your bag. visit the Cafe!" : "Nothing in your bag. visit the Toy Store!");
+    footer(c, "Tap an item");
 }
 
 static void screen_hang(Canvas *c) {
     const Jerry *j = jl_selected();
     if (!j) return;
-    header(c, "HANG OUT WITH...", false);
+    header(c, "Hang out with...", false);
     const Jerry *others[MAX_JERRIES];
     int n = 0;
     for (int i = 0; i < jl.nJerries; i++) if (&jl.jerries[i] != j && !jl.jerries[i].inside) others[n++] = &jl.jerries[i];
@@ -916,18 +916,18 @@ static void screen_hang(Canvas *c) {
         int y = list_row_y(i);
         spr_icon(c, SKINS[others[i]->skin].spr, 6, y + 3);
         T10(c, 28, y + 6, others[i]->name, C_WHITE);
-        gfx_text_right(c, &font8, 232, y + 8, jl_rel_name(jl_rel(j->id, others[i]->id)), C_DIM, 1);
+        gfx_text_right(c, &fontsm, 232, y + 8, jl_rel_name(jl_rel(j->id, others[i]->id)), C_DIM, 1);
     }
-    list_end(c, "NOBODY ELSE IS AROUND.");
-    footer(c, "TAP WHO TO VISIT");
+    list_end(c, "Nobody else is around.");
+    footer(c, "Tap who to visit");
 }
 
 static void screen_shop(Canvas *c) {
     int items[64];
     int n = shop_items(items);
-    header(c, U.shopKind == 0 ? "JERRY CAFE" : "JERRY TOYS", true);
+    header(c, U.shopKind == 0 ? "Jerry Cafe" : "Jerry Toys", true);
     if (U.shopKind == 0) tabs(c, TASTE_TAB, 5, 19);
-    else { static const char *const T[2] = {"TOYS", "GIFTS"}; tabs(c, T, 2, 19); }
+    else { static const char *const T[2] = {"Toys", "Gifts"}; tabs(c, T, 2, 19); }
     list_begin(c, 4, 36, 248, 126, 20, n);
     char a[48];
     for (int i = 0; i < n; i++) {
@@ -942,7 +942,7 @@ static void screen_shop(Canvas *c) {
         int y = list_row_y(i);
         spr_icon(c, spr, 8, y + 2);
         T8(c, 28, y + 3, name, afford || owned ? C_WHITE : C_DIM);
-        if (owned) T8(c, 28, y + 11, "OWNED", C_GREEN);
+        if (owned) T8(c, 28, y + 11, "Owned", C_GREEN);
         else { snprintf(a, sizeof a, "X%d", own); T8(c, 28, y + 11, a, C_DIM); }
         if (!owned) {
             snprintf(a, sizeof a, "%d", price);
@@ -952,7 +952,7 @@ static void screen_shop(Canvas *c) {
         }
     }
     list_end(c, NULL);
-    footer(c, U.shopKind == 0 && U.tab == 4 ? "PRANK FOOD. JERRIES HATE IT." : "TAP TO BUY");
+    footer(c, U.shopKind == 0 && U.tab == 4 ? "Prank food. Jerries hate it." : "Tap to buy");
 }
 
 static void card(Canvas *c, int x, int y, int w, int h, const char *title, const char *l1, const char *l2) {
@@ -963,19 +963,19 @@ static void card(Canvas *c, int x, int y, int w, int h, const char *title, const
 }
 
 static void screen_hall(Canvas *c) {
-    header(c, "TOWN HALL", true);
+    header(c, "Town hall", true);
     char a[48], b[48];
     int cost = jl_create_cost();
-    if (cost) snprintf(a, sizeof a, "COST: %d COINS", cost); else snprintf(a, sizeof a, "COST: FREE");
-    snprintf(b, sizeof b, "FREE HOMES: %d", jl_free_houses());
-    card(c, 4, 21, 122, 52, "MOVE IN A JERRY", a, b);
-    button(c, ID_CREATE, 10, 52, 110, 17, "CREATE", BS_OK, true);
+    if (cost) snprintf(a, sizeof a, "Cost: %d coins", cost); else snprintf(a, sizeof a, "Cost: free");
+    snprintf(b, sizeof b, "Free homes: %d", jl_free_houses());
+    card(c, 4, 21, 122, 52, "Move in a Jerry", a, b);
+    button(c, ID_CREATE, 10, 52, 110, 17, "Create", BS_OK, true);
     int hc = jl_house_cost();
-    if (hc < 0) snprintf(a, sizeof a, "ALL LOTS BUILT"); else snprintf(a, sizeof a, "COST: %d COINS", hc);
-    snprintf(b, sizeof b, "HOMES: %d/%d", jl.nHouses, MAX_HOUSES);
-    card(c, 130, 21, 122, 52, "BUILD A HOUSE", a, b);
-    button(c, ID_BUILD, 136, 52, 110, 17, "BUILD", BS_OK, true);
-    T8(c, 6, 77, "RESIDENTS", C_GOLD);
+    if (hc < 0) snprintf(a, sizeof a, "All lots built"); else snprintf(a, sizeof a, "Cost: %d coins", hc);
+    snprintf(b, sizeof b, "Homes: %d/%d", jl.nHouses, MAX_HOUSES);
+    card(c, 130, 21, 122, 52, "Build a house", a, b);
+    button(c, ID_BUILD, 136, 52, 110, 17, "Build", BS_OK, true);
+    T8(c, 6, 77, "Residents", C_GOLD);
     list_begin(c, 4, 87, 248, 75, 20, jl.nJerries);
     for (int i = 0; i < jl.nJerries; i++) {
         if (!row_bg(c, i, ROW_NORMAL)) continue;
@@ -984,57 +984,57 @@ static void screen_hall(Canvas *c) {
         spr_icon(c, SKINS[j->skin].spr, 6, y + 2);
         T8(c, 26, y + 6, j->name, C_WHITE);
         snprintf(a, sizeof a, "LV %d %s", j->lvl, jl_pers_label(j->pers));
-        gfx_text_right(c, &font8, 190, y + 6, a, C_DIM, 1);
-        T8(c, 198, y + 6, "FIND", C_GREEN);
+        gfx_text_right(c, &fontsm, 190, y + 6, a, C_DIM, 1);
+        T8(c, 198, y + 6, "Find", C_GREEN);
     }
-    list_end(c, "NOBODY LIVES HERE YET.");
+    list_end(c, "Nobody lives here yet.");
     footer(c, NULL);
 }
 
 static void screen_create(Canvas *c) {
-    header(c, U.first ? "WELCOME TO JERRY LIFE!" : "NEW RESIDENT", true);
-    T8(c, 6, 26, "NAME", C_DIM);
+    header(c, U.first ? "Welcome to Jerry life!" : "New resident", true);
+    T8(c, 6, 26, "Name", C_DIM);
     button(c, ID_PREV, 40, 20, 22, 20, "", BS_NORMAL, true);
     fx_bits(c, 47 + (U.pressed == ID_PREV), 26 + (U.pressed == ID_PREV), B_LARR, 7);
     panel(c, 64, 20, 100, 20);
     gfx_text_centered(c, &font10, 114, 25, U.name, C_WHITE, 1);
     button(c, ID_NEXT, 166, 20, 22, 20, "", BS_NORMAL, true);
     fx_bits(c, 173 + (U.pressed == ID_NEXT), 26 + (U.pressed == ID_NEXT), B_RARR, 7);
-    button(c, ID_EDIT, 192, 20, 60, 20, "TYPE", BS_NORMAL, true);
+    button(c, ID_EDIT, 192, 20, 60, 20, "Type", BS_NORMAL, true);
 
-    T8(c, 6, 46, "SKIN", C_DIM);
+    T8(c, 6, 46, "Skin", C_DIM);
     for (int i = 0; i < SKIN_COUNT; i++) {
         int x = 4 + i * 42, y = 55;
         gfx_bevel_panel(c, x, y, 40, 46, RGB8(26, 26, 26), RGB8(0, 0, 0), RGB8(85, 85, 85));
         spr_draw(c, SKINS[i].spr, x + 20 - 1 + 0 + 0 - 0 + 0, y + 34, 2, false, false);
-        gfx_text_centered(c, &font8, x + 20, y + 36, SKINS[i].name, i == U.skin ? C_GOLD : C_DIM, 1);
+        gfx_text_centered(c, &fontsm, x + 20, y + 36, SKINS[i].name, i == U.skin ? C_GOLD : C_DIM, 1);
         reg(ID_SKIN + i, x, y, 40, 46, false);
         if (i == U.skin) { gfx_frame(c, x, y, 40, 46, C_GOLD); gfx_frame(c, x + 1, y + 1, 38, 44, RGB8(200, 130, 0)); }
         focus_ring(c, ID_SKIN + i, x, y, 40, 46);
     }
-    T8(c, 6, 106, "PERSONALITY", C_DIM);
+    T8(c, 6, 106, "Personality", C_DIM);
     for (int i = 0; i < PERS_COUNT; i++) {
         int x = 3 + i * 50;
         bool on = i == U.pers;
         bool pr = U.pressed == ID_PERS + i;
         gfx_nineslice(c, (on || pr) ? tex_button_active : tex_button, x, 117, 48, 20);
-        gfx_text_centered(c, &font8, x + 24, 124 + (on ? 1 : 0), jl_pers_label(i), on ? C_GOLD : C_WHITE, 1);
+        gfx_text_centered(c, &fontsm, x + 24, 124 + (on ? 1 : 0), jl_pers_label(i), on ? C_GOLD : C_WHITE, 1);
         reg(ID_PERS + i, x, 117, 48, 20, false);
         focus_ring(c, ID_PERS + i, x, 117, 48, 20);
     }
     char a[64];
     int cost = jl_create_cost();
-    if (cost) snprintf(a, sizeof a, "COST: %d COINS   FREE HOMES: %d", cost, jl_free_houses());
-    else snprintf(a, sizeof a, "FIRST THREE RESIDENTS ARE FREE   HOMES: %d", jl_free_houses());
+    if (cost) snprintf(a, sizeof a, "Cost: %d coins   Free homes: %d", cost, jl_free_houses());
+    else snprintf(a, sizeof a, "First three residents are free   Homes: %d", jl_free_houses());
     T8(c, 6, 143, a, C_DIM);
     if (U.msgT > 0) T8(c, 6, 153, U.msg, C_GOLD);
-    if (cost) snprintf(a, sizeof a, "MOVE IN (%d)", cost); else snprintf(a, sizeof a, "MOVE IN");
+    if (cost) snprintf(a, sizeof a, "MOVE IN (%d)", cost); else snprintf(a, sizeof a, "Move in");
     button(c, ID_GO, 4, 166, U.first ? 248 : 150, 24, a, BS_OK, true);
-    if (!U.first) button(c, ID_BACK, 160, 166, 92, 24, "CANCEL", BS_CANCEL, true);
+    if (!U.first) button(c, ID_BACK, 160, 166, 92, 24, "Cancel", BS_CANCEL, true);
 }
 
 static void screen_name(Canvas *c) {
-    header(c, "TYPE A NAME", false);
+    header(c, "Type a name", false);
     panel(c, 4, 22, 248, 24);
     char a[NAME_LEN + 2];
     snprintf(a, sizeof a, "%s%s", U.name, (jl.clock > 0 && ((int)(jl.clock * 2) & 1)) || U.pressed ? "_" : " ");
@@ -1046,20 +1046,20 @@ static void screen_name(Canvas *c) {
             char s[2] = {R[r][k], 0};
             button(c, ID_KEY + R[r][k], X0[r] + k * 25, 54 + r * 26, 24, 24, s, BS_NORMAL, true);
         }
-    button(c, ID_BKSP, 28 + 7 * 25, 54 + 2 * 26, 49, 24, "DEL", BS_CANCEL, true);
-    button(c, ID_SPACE, 4, 54 + 3 * 26, 160, 24, "SPACE", BS_NORMAL, true);
-    button(c, ID_DONE, 168, 54 + 3 * 26, 84, 24, "DONE", BS_OK, true);
-    T8(c, 6, 142, "UP TO 12 LETTERS", C_DIM);
+    button(c, ID_BKSP, 28 + 7 * 25, 54 + 2 * 26, 49, 24, "Del", BS_CANCEL, true);
+    button(c, ID_SPACE, 4, 54 + 3 * 26, 160, 24, "Space", BS_NORMAL, true);
+    button(c, ID_DONE, 168, 54 + 3 * 26, 84, 24, "Done", BS_OK, true);
+    T8(c, 6, 142, "Up to 12 letters", C_DIM);
 }
 
 static void screen_news(Canvas *c) {
-    header(c, "ISLAND NEWS", false);
+    header(c, "Island news", false);
     char a[32];
-    const struct { const char *l; int v; } S[4] = {{"RESIDENTS", jl.nJerries}, {"FRIENDS", jl_friend_count()},
-                                                    {"COUPLES", jl_couple_count()}, {"COINS", jl.coins}};
+    const struct { const char *l; int v; } S[4] = {{"Residents", jl.nJerries}, {"Friends", jl_friend_count()},
+                                                    {"Couples", jl_couple_count()}, {"Coins", jl.coins}};
     for (int i = 0; i < 4; i++) {
         panel(c, 4 + i * 63, 20, 60, 22);
-        gfx_text_centered(c, &font8, 34 + i * 63, 23, S[i].l, C_DIM, 0);
+        gfx_text_centered(c, &fontsm, 34 + i * 63, 23, S[i].l, C_DIM, 0);
         snprintf(a, sizeof a, "%d", S[i].v);
         gfx_text_centered(c, &font10, 34 + i * 63, 32, a, C_WHITE, 1);
     }
@@ -1077,13 +1077,13 @@ static void screen_news(Canvas *c) {
         T8(c, 36, y + 2, lines[0], C_WHITE);
         if (n > 1) T8(c, 36, y + 11, lines[1], C_WHITE);
     }
-    list_end(c, "QUIET DAY ON THE ISLAND.");
-    footer(c, "SCROLL TO READ MORE");
+    list_end(c, "Quiet day on the island.");
+    footer(c, "Scroll to read more");
 }
 
 static void screen_res(Canvas *c) {
-    header(c, "RESIDENTS", false);
-    static const char *const T[2] = {"RESIDENTS", "FRIENDSHIPS"};
+    header(c, "Residents", false);
+    static const char *const T[2] = {"Residents", "Friendships"};
     tabs(c, T, 2, 19);
     char a[64];
     if (U.tab == 0) {
@@ -1094,13 +1094,13 @@ static void screen_res(Canvas *c) {
             int y = list_row_y(i);
             spr_icon(c, SKINS[j->skin].spr, 6, y + 4);
             T10(c, 26, y + 3, j->name, C_WHITE);
-            snprintf(a, sizeof a, "JOY %d  HUNGER %d", (int)j->joy, (int)j->hunger);
+            snprintf(a, sizeof a, "Joy %d  Hunger %d", (int)j->joy, (int)j->hunger);
             T8(c, 26, y + 14, a, C_DIM);
             snprintf(a, sizeof a, "LV %d %s", j->lvl, jl_pers_label(j->pers));
-            gfx_text_right(c, &font8, 232, y + 5, a, C_WHITE, 1);
+            gfx_text_right(c, &fontsm, 232, y + 5, a, C_WHITE, 1);
             if (j->lover) fx_heart(c, 238, y + 16, C_PINK);
         }
-        list_end(c, "NOBODY LIVES HERE YET.");
+        list_end(c, "Nobody lives here yet.");
     } else {
         Pair p[MAX_REL];
         int n = friend_pairs(p, MAX_REL);
@@ -1113,14 +1113,14 @@ static void screen_res(Canvas *c) {
             T8(c, 6, y + 12, jl_rel_name((float)p[i].v), C_PINK);
             bar(c, 130, y + 6, 100, 8, (float)p[i].v, C_PINK);
         }
-        list_end(c, "NO FRIENDSHIPS YET. LET THEM MINGLE!");
+        list_end(c, "No friendships yet. let them mingle!");
     }
-    footer(c, "TAP A RESIDENT TO SELECT");
+    footer(c, "Tap a resident to select");
 }
 
 static void screen_items(Canvas *c) {
-    header(c, "ITEMS", true);
-    static const char *const T[3] = {"FOOD", "GIFTS", "TOYS"};
+    header(c, "Items", true);
+    static const char *const T[3] = {"Food", "Gifts", "Toys"};
     tabs(c, T, 3, 19);
     int items[64], n;
     if (U.tab == 0) n = owned_foods(items);
@@ -1137,41 +1137,41 @@ static void screen_items(Canvas *c) {
         T10(c, 28, y + 6, name, C_WHITE);
         if (U.tab < 2) { snprintf(a, sizeof a, "X%d", U.tab == 0 ? jl.foods[it] : jl.gifts[it]); gfx_text_right(c, &font10, 232, y + 6, a, C_GOLD, 1); }
     }
-    list_end(c, U.tab == 0 ? "NO FOOD. VISIT THE CAFE!" : U.tab == 1 ? "NO GIFTS. VISIT THE TOY STORE!" : "NO TOYS YET.");
+    list_end(c, U.tab == 0 ? "No food. visit the Cafe!" : U.tab == 1 ? "No gifts. visit the Toy Store!" : "No toys yet.");
     footer(c, NULL);
 }
 
 static void screen_menu(Canvas *c) {
-    header(c, "MENU", false);
+    header(c, "Menu", false);
     char a[48];
     snprintf(a, sizeof a, "SEASON: %s", SEASON_MODE[jl.seasonMode % 5]);
     button(c, ID_SEASON, 6, 22, 244, 22, a, BS_NORMAL, true);
     snprintf(a, sizeof a, "TIME OF DAY: %s", TIME_MODE[jl.timeMode % TIME_MODES]);
     button(c, ID_TIME, 6, 48, 244, 22, a, BS_NORMAL, true);
-    snprintf(a, sizeof a, "MUSIC: %s", jl.musicOn ? "ON" : "OFF");
+    snprintf(a, sizeof a, "MUSIC: %s", jl.musicOn ? "On" : "Off");
     button(c, ID_MUSIC, 6, 74, 244, 22, a, BS_NORMAL, true);
-    button(c, ID_SAVE, 6, 100, 244, 22, plat_storage_ok() ? "SAVE NOW" : "NO SD CARD: SAVING OFF", BS_OK, plat_storage_ok());
-    button(c, ID_ERASE, 6, 126, 244, 22, "ERASE ISLAND", BS_CANCEL, true);
+    button(c, ID_SAVE, 6, 100, 244, 22, plat_storage_ok() ? "Save now" : "No sd card: saving off", BS_OK, plat_storage_ok());
+    button(c, ID_ERASE, 6, 126, 244, 22, "Erase island", BS_CANCEL, true);
     const char *st = plat_save_status();
     if (st && st[0]) T8(c, 6, 152, st, C_DIM);
     footer(c, NULL);
 }
 
 static void screen_confirm(Canvas *c) {
-    header(c, U.confirmKind == 0 ? "MOVE OUT?" : "ERASE ISLAND?", false);
+    header(c, U.confirmKind == 0 ? "Move out?" : "Erase island?", false);
     const Jerry *j = jl_selected();
     char a[64];
     panel(c, 8, 30, 240, 100);
     if (U.confirmKind == 0 && j) {
         snprintf(a, sizeof a, "MOVE %s OUT?", j->name);
         gfx_text_centered(c, &font10, 128, 52, a, C_WHITE, 1);
-        gfx_text_centered(c, &font8, 128, 72, "THEY WILL LEAVE THE ISLAND FOR GOOD.", C_DIM, 1);
+        gfx_text_centered(c, &fontsm, 128, 72, "They will leave the island for good.", C_DIM, 1);
     } else {
-        gfx_text_centered(c, &font10, 128, 52, "ERASE EVERYTHING?", C_RED, 1);
-        gfx_text_centered(c, &font8, 128, 72, "ALL RESIDENTS, ITEMS AND COINS ARE LOST.", C_DIM, 1);
+        gfx_text_centered(c, &font10, 128, 52, "Erase everything?", C_RED, 1);
+        gfx_text_centered(c, &fontsm, 128, 72, "All residents, items and coins are lost.", C_DIM, 1);
     }
-    button(c, ID_YES, 4, 150, 120, 30, U.confirmKind == 0 ? "MOVE OUT" : "ERASE", BS_OK, true);
-    button(c, ID_NO, 132, 150, 120, 30, "KEEP", BS_CANCEL, true);
+    button(c, ID_YES, 4, 150, 120, 30, U.confirmKind == 0 ? "Move out" : "Erase", BS_OK, true);
+    button(c, ID_NO, 132, 150, 120, 30, "Keep", BS_CANCEL, true);
 }
 
 void ui_draw_bottom(px *fb) {

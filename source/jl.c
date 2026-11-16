@@ -465,9 +465,9 @@ Jerry *jl_create_jerry(const char *name, int skin, int pers) {
     snprintf(j->name, NAME_LEN, "%s", name && name[0] ? name : JL_NAMES[RI(0, JL_NAME_COUNT - 1)]);
     for (int i = 0; i < jl.nJerries - 1; i++) // names stay unique
         if (strcmp(jl.jerries[i].name, j->name) == 0) {
-            char base[NAME_LEN];
+            char base[10];
             snprintf(base, sizeof base, "%.9s", j->name);
-            snprintf(j->name, NAME_LEN, "%s%02d", base, RI(2, 99) % 100);
+            snprintf(j->name, NAME_LEN, "%s%d", base, clampi(RI(2, 99), 2, 99));
             break;
         }
     j->skin = (uint8_t)clampi(skin, 0, SKIN_COUNT - 1);

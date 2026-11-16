@@ -240,13 +240,13 @@ static void draw_label_house(Canvas *c, const Building *b, int sx, int sy) {
     for (int i = 0; i < jl.nHouses; i++)
         if (jl.houses[i].slot == b->slot && jl.houses[i].owner) ow = jl_jerry(jl.houses[i].owner);
     if (ow) {
-        fx_outline_text(c, &font8, sx, sy + 4, ow->name, RGB8(255, 255, 255));
+        fx_outline_text(c, &fontsm, sx, sy + 4, ow->name, RGB8(255, 255, 255));
         if (ow->inside) {
             int zz = (int)(sinf(jl.clock * 2) * 3);
             fx_emote(c, EM_ZZZ, sx + zz, sy - spr_def(b->spr)->ay + 18);
         }
     } else {
-        fx_outline_text(c, &font8, sx, sy + 4, "VACANT", RGB8(153, 255, 153));
+        fx_outline_text(c, &fontsm, sx, sy + 4, "Vacant", RGB8(153, 255, 153));
     }
 }
 
@@ -274,7 +274,7 @@ static void draw_bubble(Canvas *c, const Jerry *j, int sx, int sy) {
         strncat(L, word, 19 - strlen(L));
     }
     int mw = 0;
-    for (int i = 0; i < nl; i++) mw = maxi(mw, gfx_text_width(&font8, lines[i]));
+    for (int i = 0; i < nl; i++) mw = maxi(mw, gfx_text_width(&fontsm, lines[i]));
     int w = mw + 8, h = nl * 9 + 5;
     int bx = clampi(x - w / 2, 2, SCREEN_W - w - 2), by = y - h - 3;
     px fill = RGB8(255, 251, 232), edge = RGB8(58, 47, 38);
@@ -283,7 +283,7 @@ static void draw_bubble(Canvas *c, const Jerry *j, int sx, int sy) {
     gfx_fill(c, x - 2, by + h, 5, 1, fill);
     gfx_fill(c, x - 1, by + h + 1, 3, 1, fill);
     gfx_fill(c, x, by + h + 2, 1, 1, fill);
-    for (int i = 0; i < nl; i++) gfx_text_centered(c, &font8, bx + w / 2, by + 3 + i * 9, lines[i], RGB8(43, 33, 24), 0);
+    for (int i = 0; i < nl; i++) gfx_text_centered(c, &fontsm, bx + w / 2, by + 3 + i * 9, lines[i], RGB8(43, 33, 24), 0);
 }
 
 static void draw_jerry(Canvas *c, const Jerry *j, int camX, int camY, bool selected) {
@@ -301,7 +301,7 @@ static void draw_jerry(Canvas *c, const Jerry *j, int camX, int camY, bool selec
         spr_draw(c, GIFTS[j->held].spr, left + g->ax, sy - lift - 20 + g->ay, 1, false, true);
     }
     if (j->angry) fx_emote(c, EM_ANGRY, sx + 10, sy - 36);
-    fx_outline_text(c, &font8, sx, sy + 4, j->name, RGB8(255, 255, 255));
+    fx_outline_text(c, &fontsm, sx, sy + 4, j->name, RGB8(255, 255, 255));
     if (j->conType != CON_NONE && j->bubKind == BUB_NONE) {
         int yy = sy - 40 + (int)(sinf(jl.clock * 4) * 2);
         gfx_fill(c, sx - 9, yy - 14, 18, 18, RGB8(255, 251, 232));
@@ -418,7 +418,7 @@ void world_draw(Canvas *c, int camX, int camY) {
             int sx = b->x - camX, sy = b->y - camY;
             spr_draw(c, b->spr, sx, sy, 1, false, true);
             if (b->type == BT_HOUSE) draw_label_house(c, b, sx, sy);
-            else fx_outline_text(c, &font8, sx, sy + 5, b->name, RGB8(255, 216, 74));
+            else fx_outline_text(c, &fontsm, sx, sy + 5, b->name, RGB8(255, 216, 74));
         } else if (it->type == DI_JERRY) {
             const Jerry *j = &jl.jerries[it->idx];
             draw_jerry(c, j, camX, camY, jl.selected == j->id);
@@ -443,6 +443,6 @@ void world_draw(Canvas *c, int camX, int camY) {
     for (int i = 0; i < MAX_POPUPS; i++) {
         const Popup *p = &jl.popups[i];
         if (!p->on) continue;
-        if (p->l > .5f || ((int)(jl.clock * 30) & 1)) fx_outline_text(c, &font8, (int)p->x - camX, (int)p->y - camY, p->text, p->col);
+        if (p->l > .5f || ((int)(jl.clock * 30) & 1)) fx_outline_text(c, &fontsm, (int)p->x - camX, (int)p->y - camY, p->text, p->col);
     }
 }
