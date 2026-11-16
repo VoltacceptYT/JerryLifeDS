@@ -116,7 +116,7 @@ typedef struct {
 
 extern JL jl;
 
-// SFX_POP..SFX_BAD are PSG blips; the rest are Jerry samples (assets/sfx/jerry_*.ogg, a random variant
+// Every kind is a sample from assets/sfx (jerry_*.ogg voices; pop/coin/heart/bad.ogg effects; a random variant
 // of the family: yes1/yes2/yes3 ...).
 enum { SFX_POP, SFX_COIN, SFX_HEART, SFX_BAD,
        SFX_LEVEL,   // levelup: level ups, moving in, becoming a couple

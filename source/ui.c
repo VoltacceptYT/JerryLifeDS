@@ -27,7 +27,7 @@ enum { M_MAP, M_JERRY, M_PICK, M_HANG, M_SHOP, M_HALL, M_CREATE, M_NAME, M_NEWS,
 enum {
     ID_NONE, ID_BACK, ID_NEWS, ID_RES, ID_ITEMS, ID_MENU, ID_FEED, ID_GIFT, ID_TALK, ID_HANG, ID_MOVEOUT, ID_CLOSE,
     ID_CREATE, ID_BUILD, ID_YES, ID_NO, ID_PREV, ID_NEXT, ID_EDIT, ID_GO, ID_SEASON, ID_TIME, ID_MUSIC, ID_SAVE,
-    ID_ERASE, ID_BKSP, ID_SPACE, ID_DONE,
+    ID_ERASE, ID_BKSP, ID_SPACE, ID_DONE, ID_SHIFT,
     ID_TAB = 100, ID_SKIN = 120, ID_PERS = 140, ID_KEY = 200, ID_ROW = 1000
 };
 
@@ -55,6 +55,7 @@ static struct {
     char name[NAME_LEN];
     int nameIdx, skin, pers;
     bool first, fromHall;
+    bool shift;         // on-screen keyboard: next letter is a capital (auto-set at the start and after a space)
     // footer message
     char msg[40];
     int msgT;
@@ -72,8 +73,15 @@ static const char *const TASTE_TAB[5] = {"Sweet", "Savory", "Spicy", "Drink", "G
 
 /* ================================================================ small helpers */
 
+// Capital next? True for an empty name or right after a space (the Shift key can still override).
+static bool name_wants_caps(void) {
+    size_t n = strlen(U.name);
+    return n == 0 || U.name[n - 1] == ' ';
+}
+
 static void go(int mode) {
     U.mode = mode;
+    if (mode == M_NAME) U.shift = name_wants_caps();
     U.scroll = 0;
     U.focusId = 0;
     U.tab = 0;
@@ -519,11 +527,21 @@ static void act(int id) {
         {
             size_t n = strlen(U.name);
             if (id >= ID_KEY && id < ID_KEY + 128) {
-                if (n < NAME_LEN - 1) { U.name[n] = (char)(id - ID_KEY); U.name[n + 1] = 0; }
+                if (n < NAME_LEN - 1) {
+                    char ch = (char)(id - ID_KEY);                 // key ids carry the capital letter
+                    if (ch >= 'A' && ch <= 'Z' && !U.shift) ch = (char)(ch - 'A' + 'a');
+                    U.name[n] = ch;
+                    U.name[n + 1] = 0;
+                }
+                U.shift = false;
+            } else if (id == ID_SHIFT) {
+                U.shift = !U.shift;
             } else if (id == ID_SPACE) {
                 if (n && n < NAME_LEN - 1 && U.name[n - 1] != ' ') { U.name[n] = ' '; U.name[n + 1] = 0; }
+                U.shift = name_wants_caps();
             } else if (id == ID_BKSP) {
                 if (n) U.name[n - 1] = 0;
+                U.shift = name_wants_caps();
             } else if (id == ID_DONE) {
                 while (strlen(U.name) && U.name[strlen(U.name) - 1] == ' ') U.name[strlen(U.name) - 1] = 0;
                 if (!U.name[0]) snprintf(U.name, sizeof U.name, "%s", JL_NAMES[U.nameIdx]);
@@ -1083,13 +1101,15 @@ static void screen_name(Canvas *c) {
     static const int X0[3] = {3, 15, 28};
     for (int r = 0; r < 3; r++)
         for (int k = 0; R[r][k]; k++) {
-            char s[2] = {R[r][k], 0};
-            button(c, ID_KEY + R[r][k], X0[r] + k * 25, 54 + r * 26, 24, 24, s, BS_NORMAL, true);
+            char ch = R[r][k];
+            char s[2] = {U.shift ? ch : (char)(ch - 'A' + 'a'), 0};   // the keys show what they will type
+            button(c, ID_KEY + ch, X0[r] + k * 25, 54 + r * 26, 24, 24, s, BS_NORMAL, true);
         }
+    button(c, ID_SHIFT, 3, 54 + 2 * 26, 24, 24, "Aa", U.shift ? BS_OK : BS_NORMAL, true);
     button(c, ID_BKSP, 28 + 7 * 25, 54 + 2 * 26, 49, 24, "Del", BS_CANCEL, true);
     button(c, ID_SPACE, 4, 54 + 3 * 26, 160, 24, "Space", BS_NORMAL, true);
     button(c, ID_DONE, 168, 54 + 3 * 26, 84, 24, "Done", BS_OK, true);
-    T8(c, 6, 142, "Up to 12 letters", C_DIM);
+    T8(c, 6, 142 + 20, "Up to 12 letters", C_DIM);
 }
 
 static void screen_news(Canvas *c) {

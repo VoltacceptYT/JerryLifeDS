@@ -25,7 +25,7 @@ Locally: `python3 tools/convert_assets.py` (Pillow), `python3 tools/convert_musi
 
 - `tools/convert_assets.py` regenerates `source/gfxdata.*`, `source/atlasdata.*`, `source/itemdata.*`, `assets/gen/atlas.bin` and `icon.bmp` from `assets/` (sprites come from `assets/jerrylife/atlas_*.png` + `manifest.json`).
 - `tools/convert_music.py` turns `assets/music/JerryUnited.mp3` into DS IMA-ADPCM (`source/music_data.s` embeds it).
-- `tools/convert_sfx.py` turns every `assets/sfx/jerry_*.ogg` into 8-bit PCM (`source/sfxdata.c`; the workflow regenerates it, run it locally too if you change a sound). Sounds come in families (`jerry_yes1/2/3.ogg`, ...) and a random one plays: `levelup` (level up, move in, couple), `click` (select a resident), `yes` (liked/loved food, gift or toy), `no` (refused food, arguments, can't-do-that), `haggle` (shopping), `hit` (kicking a toy), `idle` (chatting). The coin/heart/pop blips remain PSG tones.
+- `tools/convert_sfx.py` turns every `assets/sfx/*.ogg` into 8-bit PCM (`source/sfxdata.c`; the workflow regenerates it, run it locally too if you change a sound). Sounds come in families (`jerry_yes1/2/3.ogg`, ...) and a random one plays: `levelup` (level up, move in, couple), `click` (select a resident), `yes` (liked/loved food, gift or toy), `no` (refused food, arguments, can't-do-that), `haggle` (shopping), `hit` (kicking a toy), `idle` (chatting). The old PSG chiptune blips are gone: `pop` (`pop.ogg`), `coin` (`coin.ogg`, the XP-orb ding), `heart` (`heart.ogg`, a soft bubble) and `bad` (`bad.ogg`, a hurt grunt) are now recorded samples from the Sounds pack too.
 
 ## Host tests (no DS needed)
 ```
@@ -44,3 +44,6 @@ python3 tools/host/dump2png.py /tmp/ui.raw /tmp/ui.png
 
 ## Credits
 Game: VoltacceptYT | Music: VO!DWiNG | Built on the JerryClickerDS toolchain
+
+## Name keyboard
+The on-screen keyboard types lowercase. The **Aa** key toggles a capital for the next letter; it switches on by itself for the first letter and after a space ("Jerry Bob").

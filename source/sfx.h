@@ -1,4 +1,4 @@
-// Sound effects: short square-wave blips on the DS PSG voices, plus the sampled Jerry sounds.
+// Sound effects: sampled sounds only (Jerry voices and the pop/coin/heart/bad effects).
 #ifndef SFX_H
 #include <stdbool.h>
 #include <stdint.h>
