@@ -124,7 +124,7 @@ enum { SFX_POP, SFX_COIN, SFX_HEART, SFX_BAD,
        SFX_YES,     // yes1-3: liked/loved food, gift or toy
        SFX_NO,      // no1-3: refused/gross food, arguments, can't do that
        SFX_HAGGLE,  // haggle1,3: buying food, gifts and toys
-       SFX_HIT,     // hit1-4: kicking a toy
+       SFX_HIT,     // hit1-4: kicking a toy (slime squishes)
        SFX_IDLE,    // idle1-3: chatting with a resident
        SFX_KINDS };
 void sfx_play(int kind); // implemented by the platform (sfx.c / host stub)
