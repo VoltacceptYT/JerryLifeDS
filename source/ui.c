@@ -1044,13 +1044,13 @@ static void screen_create(Canvas *c) {
 
     T8(c, 6, 46, "Skin", C_DIM);
     for (int i = 0; i < SKIN_COUNT; i++) {
-        int x = 4 + i * 42, y = 55;
-        gfx_bevel_panel(c, x, y, 40, 46, RGB8(26, 26, 26), RGB8(0, 0, 0), RGB8(85, 85, 85));
-        spr_draw(c, SKINS[i].spr, x + 20 - 1 + 0 + 0 - 0 + 0, y + 34, 2, false, false);
-        gfx_text_centered(c, &fontsm, x + 20, y + 36, SKINS[i].name, i == U.skin ? C_GOLD : C_DIM, 1);
-        reg(ID_SKIN + i, x, y, 40, 46, false);
-        if (i == U.skin) { gfx_frame(c, x, y, 40, 46, C_GOLD); gfx_frame(c, x + 1, y + 1, 38, 44, RGB8(200, 130, 0)); }
-        focus_ring(c, ID_SKIN + i, x, y, 40, 46);
+        int x = 3 + i * 36, y = 55;
+        gfx_bevel_panel(c, x, y, 34, 46, RGB8(26, 26, 26), RGB8(0, 0, 0), RGB8(85, 85, 85));
+        spr_draw(c, SKINS[i].spr, x + 16, y + 34, 2, false, false);
+        gfx_text_centered(c, &fontsm, x + 17, y + 36, SKINS[i].name, i == U.skin ? C_GOLD : C_DIM, 1);
+        reg(ID_SKIN + i, x, y, 34, 46, false);
+        if (i == U.skin) { gfx_frame(c, x, y, 34, 46, C_GOLD); gfx_frame(c, x + 1, y + 1, 32, 44, RGB8(200, 130, 0)); }
+        focus_ring(c, ID_SKIN + i, x, y, 34, 46);
     }
     T8(c, 6, 106, "Personality", C_DIM);
     for (int i = 0; i < PERS_COUNT; i++) {

@@ -111,61 +111,63 @@ const SprDef spr_defs[SPR_COUNT] = {
   {16, 16, 7, 11, 14, 361892u}, /* gift_pet_item_angel_jerry */
   {16, 16, 7, 16, 10, 362176u}, /* gift_pet_item_iron_jerry */
   {16, 16, 7, 12, 20, 362452u}, /* gift_pet_item_lord_jerry */
-  {16, 16, 8, 16, 64, 362748u}, /* gift_pet_item_scuba_jerry */
-  {16, 16, 4, 14, 8, 363132u}, /* gift_pet_item_toy_jerry */
-  {16, 16, 8, 13, 8, 363404u}, /* gift_unfulfilled_jerryseed */
-  {16, 16, 8, 13, 9, 363676u}, /* gift_unripe_jerryseed */
-  {52, 20, 25, 16, 4, 363950u}, /* obj_bench */
-  {16, 16, 7, 15, 5, 364998u}, /* obj_bush */
-  {18, 15, 10, 14, 4, 365264u}, /* obj_conch */
-  {17, 15, 8, 12, 5, 365542u}, /* obj_coral */
-  {16, 15, 8, 13, 4, 365808u}, /* obj_crab */
-  {32, 15, 15, 13, 2, 366056u}, /* obj_flowers */
-  {16, 14, 8, 12, 5, 366540u}, /* obj_gshell */
-  {53, 59, 20, 52, 7, 366774u}, /* obj_palm */
-  {38, 44, 18, 36, 8, 369916u}, /* obj_parasol */
-  {34, 31, 16, 31, 5, 371604u}, /* obj_rock_big */
-  {14, 14, 5, 11, 5, 372668u}, /* obj_rock_boulder */
-  {17, 17, 9, 15, 5, 372874u}, /* obj_rock_pair_l */
-  {17, 17, 8, 15, 5, 373174u}, /* obj_rock_pair_r */
-  {19, 14, 9, 12, 7, 373474u}, /* obj_rock_small */
-  {14, 13, 6, 11, 4, 373754u}, /* obj_shell */
-  {16, 15, 6, 13, 4, 373944u}, /* obj_spiral */
-  {16, 14, 6, 11, 4, 374192u}, /* obj_sprout */
-  {15, 14, 6, 12, 3, 374424u}, /* obj_starfish */
-  {17, 16, 10, 15, 5, 374640u}, /* obj_stone */
-  {16, 13, 7, 11, 4, 374922u}, /* obj_tuft_a */
-  {14, 11, 3, 8, 3, 375138u}, /* obj_tuft_b */
-  {18, 13, 7, 11, 5, 375298u}, /* obj_tuft_c */
-  {16, 32, 7, 26, 4, 375542u}, /* prop_beehive */
-  {48, 48, 23, 42, 10, 376062u}, /* prop_car */
-  {27, 31, 12, 29, 7, 378386u}, /* prop_snowman */
-  {96, 64, 48, 57, 10, 379238u}, /* prop_tent */
-  {32, 32, 15, 25, 8, 385402u}, /* prop_workbench */
-  {16, 16, 7, 15, 22, 386442u}, /* skin_angel_jerry */
-  {16, 16, 7, 15, 14, 386742u}, /* skin_golden_jerry */
-  {16, 16, 7, 15, 24, 387026u}, /* skin_iron_jerry */
-  {16, 16, 7, 15, 13, 387330u}, /* skin_jerry */
-  {16, 16, 7, 15, 24, 387612u}, /* skin_lord_jerry */
-  {16, 16, 7, 15, 62, 387916u}, /* skin_scuba_jerry */
-  {16, 16, 6, 15, 8, 388296u}, /* toy_balloon_snake */
-  {16, 16, 7, 14, 14, 388568u}, /* toy_beach_ball */
-  {16, 16, 7, 15, 8, 388852u}, /* toy_magic_8_ball */
-  {16, 16, 3, 15, 6, 389124u}, /* toy_plastic_shovel */
-  {16, 16, 7, 15, 15, 389392u}, /* toy_squeaky_mouse */
-  {16, 16, 7, 15, 10, 389678u}, /* toy_white_dice */
-  {48, 64, 23, 46, 9, 389954u}, /* tree_fall_1 */
-  {48, 48, 23, 43, 8, 393044u}, /* tree_fall_2 */
-  {48, 48, 23, 43, 9, 395364u}, /* tree_fall_3 */
-  {48, 64, 23, 46, 9, 397686u}, /* tree_spring_1 */
-  {48, 48, 23, 43, 8, 400776u}, /* tree_spring_2 */
-  {48, 48, 23, 43, 10, 403096u}, /* tree_spring_3 */
-  {48, 64, 23, 46, 9, 405420u}, /* tree_summer_1 */
-  {48, 48, 23, 43, 8, 408510u}, /* tree_summer_2 */
-  {48, 48, 23, 43, 10, 410830u}, /* tree_summer_3 */
-  {48, 64, 23, 46, 9, 413154u}, /* tree_winter_1 */
-  {48, 48, 23, 43, 8, 416244u}, /* tree_winter_2 */
-  {48, 48, 23, 43, 9, 418564u}, /* tree_winter_3 */
+  {16, 16, 7, 14, 8, 362748u}, /* gift_pet_item_magma_jerry */
+  {16, 16, 8, 16, 64, 363020u}, /* gift_pet_item_scuba_jerry */
+  {16, 16, 4, 14, 8, 363404u}, /* gift_pet_item_toy_jerry */
+  {16, 16, 8, 13, 8, 363676u}, /* gift_unfulfilled_jerryseed */
+  {16, 16, 8, 13, 9, 363948u}, /* gift_unripe_jerryseed */
+  {52, 20, 25, 16, 4, 364222u}, /* obj_bench */
+  {16, 16, 7, 15, 5, 365270u}, /* obj_bush */
+  {18, 15, 10, 14, 4, 365536u}, /* obj_conch */
+  {17, 15, 8, 12, 5, 365814u}, /* obj_coral */
+  {16, 15, 8, 13, 4, 366080u}, /* obj_crab */
+  {32, 15, 15, 13, 2, 366328u}, /* obj_flowers */
+  {16, 14, 8, 12, 5, 366812u}, /* obj_gshell */
+  {53, 59, 20, 52, 7, 367046u}, /* obj_palm */
+  {38, 44, 18, 36, 8, 370188u}, /* obj_parasol */
+  {34, 31, 16, 31, 5, 371876u}, /* obj_rock_big */
+  {14, 14, 5, 11, 5, 372940u}, /* obj_rock_boulder */
+  {17, 17, 9, 15, 5, 373146u}, /* obj_rock_pair_l */
+  {17, 17, 8, 15, 5, 373446u}, /* obj_rock_pair_r */
+  {19, 14, 9, 12, 7, 373746u}, /* obj_rock_small */
+  {14, 13, 6, 11, 4, 374026u}, /* obj_shell */
+  {16, 15, 6, 13, 4, 374216u}, /* obj_spiral */
+  {16, 14, 6, 11, 4, 374464u}, /* obj_sprout */
+  {15, 14, 6, 12, 3, 374696u}, /* obj_starfish */
+  {17, 16, 10, 15, 5, 374912u}, /* obj_stone */
+  {16, 13, 7, 11, 4, 375194u}, /* obj_tuft_a */
+  {14, 11, 3, 8, 3, 375410u}, /* obj_tuft_b */
+  {18, 13, 7, 11, 5, 375570u}, /* obj_tuft_c */
+  {16, 32, 7, 26, 4, 375814u}, /* prop_beehive */
+  {48, 48, 23, 42, 10, 376334u}, /* prop_car */
+  {27, 31, 12, 29, 7, 378658u}, /* prop_snowman */
+  {96, 64, 48, 57, 10, 379510u}, /* prop_tent */
+  {32, 32, 15, 25, 8, 385674u}, /* prop_workbench */
+  {16, 16, 7, 15, 22, 386714u}, /* skin_angel_jerry */
+  {16, 16, 7, 15, 14, 387014u}, /* skin_golden_jerry */
+  {16, 16, 7, 15, 24, 387298u}, /* skin_iron_jerry */
+  {16, 16, 7, 15, 13, 387602u}, /* skin_jerry */
+  {16, 16, 7, 15, 24, 387884u}, /* skin_lord_jerry */
+  {16, 16, 7, 15, 80, 388188u}, /* skin_magma_jerry */
+  {16, 16, 7, 15, 62, 388604u}, /* skin_scuba_jerry */
+  {16, 16, 6, 15, 8, 388984u}, /* toy_balloon_snake */
+  {16, 16, 7, 14, 14, 389256u}, /* toy_beach_ball */
+  {16, 16, 7, 15, 8, 389540u}, /* toy_magic_8_ball */
+  {16, 16, 3, 15, 6, 389812u}, /* toy_plastic_shovel */
+  {16, 16, 7, 15, 15, 390080u}, /* toy_squeaky_mouse */
+  {16, 16, 7, 15, 10, 390366u}, /* toy_white_dice */
+  {48, 64, 23, 46, 9, 390642u}, /* tree_fall_1 */
+  {48, 48, 23, 43, 8, 393732u}, /* tree_fall_2 */
+  {48, 48, 23, 43, 9, 396052u}, /* tree_fall_3 */
+  {48, 64, 23, 46, 9, 398374u}, /* tree_spring_1 */
+  {48, 48, 23, 43, 8, 401464u}, /* tree_spring_2 */
+  {48, 48, 23, 43, 10, 403784u}, /* tree_spring_3 */
+  {48, 64, 23, 46, 9, 406108u}, /* tree_summer_1 */
+  {48, 48, 23, 43, 8, 409198u}, /* tree_summer_2 */
+  {48, 48, 23, 43, 10, 411518u}, /* tree_summer_3 */
+  {48, 64, 23, 46, 9, 413842u}, /* tree_winter_1 */
+  {48, 48, 23, 43, 8, 416932u}, /* tree_winter_2 */
+  {48, 48, 23, 43, 9, 419252u}, /* tree_winter_3 */
 };
 const char *const spr_names[SPR_COUNT] = {
   "b1_2",
@@ -277,6 +279,7 @@ const char *const spr_names[SPR_COUNT] = {
   "gift_pet_item_angel_jerry",
   "gift_pet_item_iron_jerry",
   "gift_pet_item_lord_jerry",
+  "gift_pet_item_magma_jerry",
   "gift_pet_item_scuba_jerry",
   "gift_pet_item_toy_jerry",
   "gift_unfulfilled_jerryseed",
@@ -313,6 +316,7 @@ const char *const spr_names[SPR_COUNT] = {
   "skin_iron_jerry",
   "skin_jerry",
   "skin_lord_jerry",
+  "skin_magma_jerry",
   "skin_scuba_jerry",
   "toy_balloon_snake",
   "toy_beach_ball",

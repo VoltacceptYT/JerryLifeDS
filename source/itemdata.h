@@ -5,9 +5,9 @@
 enum { TASTE_SWEET, TASTE_SAVORY, TASTE_SPICY, TASTE_DRINK, TASTE_GROSS, TASTE_COUNT };
 enum { CAT_FUN, CAT_PLANT, CAT_HERO, CAT_MAGIC, CAT_CHARM, CAT_BOX, CAT_PET, CAT_COUNT };
 #define FOOD_COUNT 53
-#define GIFT_COUNT 28
+#define GIFT_COUNT 29
 #define TOY_COUNT 6
-#define SKIN_COUNT 6
+#define SKIN_COUNT 7
 typedef struct { const char *id, *name; uint8_t taste; uint16_t price; int16_t spr; } FoodDef;
 typedef struct { const char *id, *name; uint8_t cat; uint16_t price; int16_t spr; } GiftDef;
 typedef struct { const char *id, *name; uint16_t price; int16_t spr; } ToyDef;

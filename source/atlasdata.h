@@ -5,7 +5,7 @@
 /* Indexed sprite: palette (palN x uint16 ARGB1555) at blob+off, then w*h pixel bytes.
    Pixel 0 = transparent, 1..palN = palette[n-1], 255 = soft shadow. (ax, ay) = anchor (feet). */
 typedef struct { uint16_t w, h; int16_t ax, ay; uint16_t palN; uint32_t off; } SprDef;
-#define SPR_COUNT 164
+#define SPR_COUNT 166
 extern const SprDef spr_defs[SPR_COUNT];
 extern const char *const spr_names[SPR_COUNT]; /* sorted */
 extern const uint8_t atlas_blob[];  /* assets/gen/atlas.bin, embedded by atlas_data.s */
