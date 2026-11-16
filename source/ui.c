@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
@@ -156,16 +157,6 @@ static int shop_items(int *out) {
     }
     return n;
 }
-static int item_list_count(void) {
-    int tmp[64];
-    switch (U.mode) {
-    case M_PICK: return U.pickKind == 0 ? owned_foods(tmp) : owned_gifts(tmp);
-    case M_SHOP: return shop_items(tmp);
-    case M_ITEMS: return U.tab == 0 ? owned_foods(tmp) : U.tab == 1 ? owned_gifts(tmp) : 0;
-    default: return 0;
-    }
-}
-
 typedef struct { int a, b, v; } Pair;
 static int friend_pairs(Pair *out, int max) {
     int n = 0;

@@ -467,7 +467,7 @@ Jerry *jl_create_jerry(const char *name, int skin, int pers) {
         if (strcmp(jl.jerries[i].name, j->name) == 0) {
             char base[NAME_LEN];
             snprintf(base, sizeof base, "%.9s", j->name);
-            snprintf(j->name, NAME_LEN, "%s%d", base, RI(2, 99));
+            snprintf(j->name, NAME_LEN, "%s%02d", base, RI(2, 99) % 100);
             break;
         }
     j->skin = (uint8_t)clampi(skin, 0, SKIN_COUNT - 1);

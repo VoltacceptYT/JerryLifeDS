@@ -10,6 +10,7 @@
 
 typedef uint16_t px;
 
+#undef RGB8 // libnds defines its own (without the ARGB1555 alpha bit)
 #define RGB8(r, g, b) ((px)(0x8000 | ((r) >> 3) | (((g) >> 3) << 5) | (((b) >> 3) << 10)))
 
 typedef struct {
