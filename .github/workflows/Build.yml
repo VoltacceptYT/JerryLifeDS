@@ -23,6 +23,9 @@ jobs:
       - name: Convert Music
         run: python3 tools/convert_music.py --rate 22050
 
+      - name: Convert SFX
+        run: python3 tools/convert_sfx.py --rate 22050
+
       - name: Toolchain Layout (diagnostics)
         run: |
           echo "DEVKITPRO=$DEVKITPRO DEVKITARM=$DEVKITARM"

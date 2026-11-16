@@ -905,7 +905,17 @@ void jl_tick(void) {
             }
         }
     }
-    for (int i = 0; i < jl.nJerries; i++) upd_jerry(&jl.jerries[i], dt);
+    for (int i = 0; i < jl.nJerries; i++) {
+        Jerry *j = &jl.jerries[i];
+        if (jl.dragId && j->id == jl.dragId) { // held by the stylus: stay put
+            j->st = ST_IDLE;
+            j->t = 1;
+            j->tx = j->x;
+            j->ty = j->y;
+            continue;
+        }
+        upd_jerry(j, dt);
+    }
     for (int i = 0; i < TOY_COUNT; i++) upd_toy(i, dt);
     for (int i = 0; i < MAX_SPARKS; i++) jl.sparks[i].t += dt;
     for (int i = 0; i < MAX_TOASTS; i++)
@@ -989,6 +999,7 @@ void jl_erase(void) {
 }
 
 void jl_start(void) {
+    jl.dragId = 0;
     daycycle_update();
     jl_set_time_mode(jl.timeMode);
     jl.hour = (float)daycycle_hour() + (float)daycycle_minute() / 60.0f;

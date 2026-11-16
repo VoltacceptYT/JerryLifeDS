@@ -17,6 +17,7 @@ Sprites come from assets/jerrylife/atlas_small.png and atlas_build.png (rects in
 import json, os, struct, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import smallfont
+import bigfont
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -71,7 +72,7 @@ def write(path, text):
 # Fonts (rasterised from JerrifiedPixels.ttf) and UI textures
 # ---------------------------------------------------------------------------
 FONT = os.path.join(A, "JerrifiedPixels.ttf")
-FONT_SIZES = {"font10": 10, "font14": 14}   # rasterised from JerrifiedPixels.ttf (capitals only)
+FONT_SIZES = {"font10": 10, "font14": 14}   # rasterised from JerrifiedPixels.ttf (capitals only; a-z replaced by tools/bigfont.py)
 # "fontsm": the small font with lowercase is hand-drawn in tools/smallfont.py
 
 
@@ -102,6 +103,10 @@ def font_data(size):
             r.append(v)
         rows.append(r)
         adv.append(w + 1)
+    low = bigfont.lower_glyphs(size, bot - top)   # the TTF has no lowercase: use hand-drawn a-z
+    for ch, (r, a) in low.items():
+        rows[ord(ch) - 32] = r
+        adv[ord(ch) - 32] = a
     return bot - top, rows, adv
 
 

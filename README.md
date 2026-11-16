@@ -15,7 +15,7 @@ Both screens are software-rendered (portable C), so the simulation, world and UI
 | **L** / **R** / **X** | News / Items / Residents |
 | **Start** | Menu (or back to the map) |
 | **Select** | Music on/off |
-| Stylus | Everything: minimap jump/drag, tap residents and buildings, buttons |
+| Stylus | Everything: minimap jump/drag, tap residents and buildings, buttons. **Drag a resident on the minimap to pick them up and move them** (handy if one gets stuck) |
 
 Saves go to `JerryLife.sav` next to the ROM (needs DLDI/FAT, autosaves every minute). Without storage the game still runs.
 
@@ -25,6 +25,7 @@ Locally: `python3 tools/convert_assets.py` (Pillow), `python3 tools/convert_musi
 
 - `tools/convert_assets.py` regenerates `source/gfxdata.*`, `source/atlasdata.*`, `source/itemdata.*`, `assets/gen/atlas.bin` and `icon.bmp` from `assets/` (sprites come from `assets/jerrylife/atlas_*.png` + `manifest.json`).
 - `tools/convert_music.py` turns `assets/music/JerryUnited.mp3` into DS IMA-ADPCM (`source/music_data.s` embeds it).
+- `tools/convert_sfx.py` turns `assets/sfx/jerry_click.ogg` into 8-bit PCM (`source/clickdata.c`; the workflow regenerates it, run it locally too if you change the sound). It plays when a resident is clicked.
 
 ## Host tests (no DS needed)
 ```
@@ -34,6 +35,8 @@ python3 tools/host/dump2png.py /tmp/ui.raw /tmp/ui.png
 ```
 
 ## Fonts
+(Update: `font10`/`font14` now also have hand-drawn lowercase a-z from `tools/bigfont.py`; the TTF only supplies capitals and digits/punctuation.)
+
 `font10` / `font14` are rasterised from `JerrifiedPixels.ttf` (capitals only; used for buttons and headers). `fontsm` is a hand-drawn small font with real lowercase letters, defined in `tools/smallfont.py` (run `python3 tools/smallfont.py preview.png` for a preview sheet). Edit the ASCII art there and re-run `tools/convert_assets.py`.
 
 ## Layout

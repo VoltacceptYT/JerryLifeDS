@@ -110,12 +110,13 @@ typedef struct {
     char toast[MAX_TOASTS][EVENT_LEN];
     float toastTtl[MAX_TOASTS];
     int selected;           // jerry id or 0
+    int dragId;             // jerry id being dragged by the stylus, or 0
     bool seasonDirty;       // map/terrain must be rebuilt (season changed)
 } JL;
 
 extern JL jl;
 
-enum { SFX_POP, SFX_COIN, SFX_HEART, SFX_BAD, SFX_LEVEL };
+enum { SFX_POP, SFX_COIN, SFX_HEART, SFX_BAD, SFX_LEVEL, SFX_CLICK }; // SFX_CLICK = sampled jerry_click
 void sfx_play(int kind); // implemented by the platform (sfx.c / host stub)
 
 // ----- lifecycle -----

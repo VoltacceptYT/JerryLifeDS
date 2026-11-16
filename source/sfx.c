@@ -18,6 +18,10 @@ static const Note FX[][NOTE_MAX] = {
     [SFX_LEVEL] = {{523, 4}, {659, 4}, {1047, 10}},
 };
 
+extern const int8_t click_pcm[];
+extern const unsigned click_pcm_len, click_pcm_rate;
+#define CLICK_VOLUME 110
+
 static int voice = -1;
 static int kind = -1, note = 0, left = 0;
 static bool enabled = true;
@@ -33,7 +37,10 @@ static void start_note(void) {
     left = FX[kind][note].frames;
 }
 
-void sfx_init(void) { soundEnable(); }
+void sfx_init(void) {
+    soundEnable();
+    DC_FlushRange(click_pcm, click_pcm_len); // the ARM7 reads the sample straight from RAM
+}
 
 void sfx_set_enabled(bool on) {
     enabled = on;
@@ -41,7 +48,11 @@ void sfx_set_enabled(bool on) {
 }
 
 void sfx_play(int k) {
-    if (!enabled || k < 0 || k > SFX_LEVEL) return;
+    if (!enabled || k < 0 || k > SFX_CLICK) return;
+    if (k == SFX_CLICK) { // sampled effect on its own hardware voice; doesn't disturb the PSG blips
+        soundPlaySample(click_pcm, SoundFormat_8Bit, click_pcm_len, (u16)click_pcm_rate, CLICK_VOLUME, 64, false, 0);
+        return;
+    }
     kind = k;
     note = 0;
     start_note();

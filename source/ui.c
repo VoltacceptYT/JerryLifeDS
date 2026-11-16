@@ -50,6 +50,7 @@ static struct {
     bool drag, listTouch;
     bool mmPress, mmMoved;
     int mmWx, mmWy;
+    int dragJ;          // jerry id being carried on the minimap, 0 = none
     // new resident
     char name[NAME_LEN];
     int nameIdx, skin, pers;
@@ -95,6 +96,7 @@ static void center_cam_on(float x, float y) {
 
 static void select_jerry(Jerry *j, bool wake) {
     if (wake) jl_wake(j);
+    sfx_play(SFX_CLICK);
     jl_select(j);
     U.follow = true;
     go(M_JERRY);
@@ -606,6 +608,25 @@ static void touch_map(const UiInput *in) {
     U.follow = false;
 }
 
+static void drag_jerry_to(int wx, int wy) {
+    Jerry *j = jl_jerry(U.dragJ);
+    if (!j) return;
+    float fx = (float)wx, fy = (float)wy;
+    if (map_walk(fx, fy)) { j->x = fx; j->y = fy; }
+    else if (map_walk(fx, j->y)) j->x = fx;   // slide along obstacles instead of sticking
+    else if (map_walk(j->x, fy)) j->y = fy;
+    j->tx = j->x;
+    j->ty = j->y;
+}
+
+static void drop_jerry(void) {
+    Jerry *j = jl_jerry(U.dragJ);
+    if (j && !map_walk(j->x, j->y)) map_rand_spot(NULL, 0, &j->x, &j->y);
+    if (j) { j->tx = j->x; j->ty = j->y; j->st = ST_IDLE; j->t = 0.5f; }
+    U.dragJ = 0;
+    jl.dragId = 0;
+}
+
 static void update_touch(const UiInput *in) {
     if (in->touchDown) {
         U.focusVis = false;
@@ -617,7 +638,15 @@ static void update_touch(const UiInput *in) {
         if (U.mode == M_MAP && in->ty < MM_H) {
             U.mmPress = true;
             U.mmMoved = false;
-            touch_map(in);
+            int wx = clampi(in->tx, 0, MM_W - 1) * MM_SCALE + MM_SCALE / 2;
+            int wy = clampi(in->ty, 0, MM_H - 1) * MM_SCALE + MM_SCALE / 2;
+            U.mmWx = wx;
+            U.mmWy = wy;
+            Hit h = find_hit((float)wx, (float)wy, 12);
+            if (h.kind == HIT_JERRY) { // grab a resident: drag to move, tap to select
+                U.dragJ = jl.jerries[h.index].id;
+                jl.dragId = U.dragJ;
+            } else touch_map(in);
         } else {
             const Btn *b = btn_at(in->tx, in->ty);
             U.pressed = b ? b->id : 0;
@@ -627,7 +656,13 @@ static void update_touch(const UiInput *in) {
     } else if (in->touchHeld) {
         if (U.mmPress) {
             if (abs(in->tx - U.downX) + abs(in->ty - U.downY) > 3) U.mmMoved = true;
-            touch_map(in);
+            if (U.dragJ) {
+                if (U.mmMoved) {
+                    U.mmWx = clampi(in->tx, 0, MM_W - 1) * MM_SCALE + MM_SCALE / 2;
+                    U.mmWy = clampi(in->ty, 0, MM_H - 1) * MM_SCALE + MM_SCALE / 2;
+                    drag_jerry_to(U.mmWx, U.mmWy);
+                }
+            } else touch_map(in);
             U.dirty = true;
         } else if (U.listTouch) {
             if (abs(in->ty - U.downY) > 5) {
@@ -641,7 +676,12 @@ static void update_touch(const UiInput *in) {
     if (in->touchUp) {
         if (U.mmPress) {
             U.mmPress = false;
-            if (!U.mmMoved) {
+            if (U.dragJ) {
+                int id = U.dragJ;
+                bool moved = U.mmMoved;
+                drop_jerry();
+                if (!moved) select_jerry(jl_jerry(id), false);
+            } else if (!U.mmMoved) {
                 Hit h = find_hit((float)U.mmWx, (float)U.mmWy, 12);
                 interact(h, (float)U.mmWx, (float)U.mmWy);
             }
@@ -992,7 +1032,7 @@ static void screen_hall(Canvas *c) {
 }
 
 static void screen_create(Canvas *c) {
-    header(c, U.first ? "Welcome to Jerry life!" : "New resident", true);
+    header(c, U.first ? "Welcome to Jerry Life!" : "New resident", true);
     T8(c, 6, 26, "Name", C_DIM);
     button(c, ID_PREV, 40, 20, 22, 20, "", BS_NORMAL, true);
     fx_bits(c, 47 + (U.pressed == ID_PREV), 26 + (U.pressed == ID_PREV), B_LARR, 7);
