@@ -40,7 +40,7 @@ typedef struct { const char *key; int x, y; } Prop;
 static const Prop PROPS[7] = {{"obj_bench", 450, 345}, {"obj_parasol", 515, 350}, {"prop_workbench", 300, 300},
                               {"prop_beehive", 800, 230}, {"prop_tent", 840, 330}, {"obj_rock_big", 190, 330},
                               {"obj_rock_boulder", 840, 250}};
-static int sprProp[7], sprSnowman;
+static int sprProp[7], sprSnowman, sprTentW;   // sprTentW: snowy tent (prop_tent is the plain one)
 
 static const char *const OBJ_GRASS[8] = {"obj_tuft_a", "obj_tuft_b", "obj_tuft_c", "obj_flowers",
                                          "obj_sprout", "obj_bush", "obj_rock_small", "obj_rock_pair_l"};
@@ -75,6 +75,7 @@ void map_init(void) {
     for (int i = 0; i < 7; i++) sprObjSand[i] = spr_find(OBJ_SAND[i]);
     for (int i = 0; i < 7; i++) sprProp[i] = spr_find(PROPS[i].key);
     sprSnowman = spr_find("prop_snowman");
+    sprTentW = spr_find("prop_tent_w");
 
     for (int y = 0; y < GH; y++)
         for (int x = 0; x < GW; x++) {
@@ -235,8 +236,10 @@ void map_layout(int season) {
     }
     for (int i = 0; i < 7; i++) {
         if (cell_kind(PROPS[i].x, PROPS[i].y) == K_WATER) continue;
-        add_decor(D_OBJ, PROPS[i].x, PROPS[i].y, 0, sprProp[i], true);
-        const SprDef *r = spr_def(sprProp[i]);
+        int ps = sprProp[i];
+        if (season == SEASON_WINTER && !strcmp(PROPS[i].key, "prop_tent") && sprTentW >= 0) ps = sprTentW;
+        add_decor(D_OBJ, PROPS[i].x, PROPS[i].y, 0, ps, true);
+        const SprDef *r = spr_def(ps);
         add_collide(PROPS[i].x - r->ax + 3, PROPS[i].y - 8, r->w - 6, 8);
     }
     if (season == SEASON_WINTER) add_decor(D_OBJ, 580, 320, 0, sprSnowman, true);

@@ -36,9 +36,12 @@ static void bake_season(int season) {
     static const int T[4][4] = {{255, 170, 200, 26}, {255, 230, 120, 15}, {220, 110, 20, 56}, {235, 245, 255, 159}};
     for (int i = 0; i < NTILES; i++) {
         const px *src = raw_tile(i);
-        bool water = i < 13;
+        bool waterTile = i < 13;
         for (int k = 0; k < 256; k++) {
             px v = src[k] | 0x8000;
+            // Water pieces also hold the sandy shore rim: those pixels (not teal, i.e. red >= green)
+            // get the same seasonal tint as land so the shore matches the rest of the island.
+            bool water = waterTile && ((v >> 5) & 31) > (v & 31);
             if (!water) v = mix(v, T[season][0], T[season][1], T[season][2], T[season][3]);
             else if (season == SEASON_WINTER) v = mix(v, 200, 230, 255, 56);
             tileBase[i][k] = v;

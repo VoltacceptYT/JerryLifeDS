@@ -174,7 +174,7 @@ def needed_sprites(man):
     keys += ["gift_" + g["id"] for g in man["gifts"]]
     keys += ["toy_" + t["id"] for t in man["toys"]]
     keys += [k for k in atlas if k.startswith("obj_")]
-    keys += ["prop_tent", "prop_car", "prop_workbench", "prop_beehive", "prop_snowman"]
+    keys += ["prop_tent", "prop_tent_w", "prop_car", "prop_workbench", "prop_beehive", "prop_snowman"]
     for season in ("spring", "summer", "fall", "winter"):
         keys += ["tree_%s_%d" % (season, n) for n in (1, 2, 3)]
     keys += ["b6_1", "b6_w1", "b1_2", "b1_w2", "b4_3", "b4_w3", "b5_1", "b5_w1"]

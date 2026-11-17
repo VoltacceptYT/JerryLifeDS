@@ -88,19 +88,19 @@ const GiftDef GIFTS[GIFT_COUNT] = {
   {"pet_item_magma_jerry", "Magma Jerry Doll", CAT_PET, 280, 109},
 };
 const ToyDef TOYS[TOY_COUNT] = {
-  {"beach_ball", "Beach Ball", 40, 149},
-  {"plastic_shovel", "Plastic Shovel", 60, 151},
-  {"squeaky_mouse", "Squeaky Mouse", 80, 152},
-  {"magic_8_ball", "Magic 8-Ball", 120, 150},
-  {"balloon_snake", "Balloon Snake", 150, 148},
-  {"white_dice", "White Dice", 200, 153},
+  {"beach_ball", "Beach Ball", 40, 150},
+  {"plastic_shovel", "Plastic Shovel", 60, 152},
+  {"squeaky_mouse", "Squeaky Mouse", 80, 153},
+  {"magic_8_ball", "Magic 8-Ball", 120, 151},
+  {"balloon_snake", "Balloon Snake", 150, 149},
+  {"white_dice", "White Dice", 200, 154},
 };
 const SkinDef SKINS[SKIN_COUNT] = {
-  {"jerry", "Classic", 144},
-  {"golden_jerry", "Golden", 142},
-  {"iron_jerry", "Iron", 143},
-  {"lord_jerry", "Lord", 145},
-  {"angel_jerry", "Angel", 141},
-  {"scuba_jerry", "Scuba", 147},
-  {"magma_jerry", "Magma", 146},
+  {"jerry", "Classic", 145},
+  {"golden_jerry", "Golden", 143},
+  {"iron_jerry", "Iron", 144},
+  {"lord_jerry", "Lord", 146},
+  {"angel_jerry", "Angel", 142},
+  {"scuba_jerry", "Scuba", 148},
+  {"magma_jerry", "Magma", 147},
 };

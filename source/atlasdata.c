@@ -141,33 +141,34 @@ const SprDef spr_defs[SPR_COUNT] = {
   {16, 32, 7, 26, 4, 375814u}, /* prop_beehive */
   {48, 48, 23, 42, 10, 376334u}, /* prop_car */
   {27, 31, 12, 29, 7, 378658u}, /* prop_snowman */
-  {96, 64, 48, 57, 10, 379510u}, /* prop_tent */
-  {32, 32, 15, 25, 8, 385674u}, /* prop_workbench */
-  {16, 16, 7, 15, 22, 386714u}, /* skin_angel_jerry */
-  {16, 16, 7, 15, 14, 387014u}, /* skin_golden_jerry */
-  {16, 16, 7, 15, 24, 387298u}, /* skin_iron_jerry */
-  {16, 16, 7, 15, 13, 387602u}, /* skin_jerry */
-  {16, 16, 7, 15, 24, 387884u}, /* skin_lord_jerry */
-  {16, 16, 7, 15, 80, 388188u}, /* skin_magma_jerry */
-  {16, 16, 7, 15, 62, 388604u}, /* skin_scuba_jerry */
-  {16, 16, 6, 15, 8, 388984u}, /* toy_balloon_snake */
-  {16, 16, 7, 14, 14, 389256u}, /* toy_beach_ball */
-  {16, 16, 7, 15, 8, 389540u}, /* toy_magic_8_ball */
-  {16, 16, 3, 15, 6, 389812u}, /* toy_plastic_shovel */
-  {16, 16, 7, 15, 15, 390080u}, /* toy_squeaky_mouse */
-  {16, 16, 7, 15, 10, 390366u}, /* toy_white_dice */
-  {48, 64, 23, 46, 9, 390642u}, /* tree_fall_1 */
-  {48, 48, 23, 43, 8, 393732u}, /* tree_fall_2 */
-  {48, 48, 23, 43, 9, 396052u}, /* tree_fall_3 */
-  {48, 64, 23, 46, 9, 398374u}, /* tree_spring_1 */
-  {48, 48, 23, 43, 8, 401464u}, /* tree_spring_2 */
-  {48, 48, 23, 43, 10, 403784u}, /* tree_spring_3 */
-  {48, 64, 23, 46, 9, 406108u}, /* tree_summer_1 */
-  {48, 48, 23, 43, 8, 409198u}, /* tree_summer_2 */
-  {48, 48, 23, 43, 10, 411518u}, /* tree_summer_3 */
-  {48, 64, 23, 46, 9, 413842u}, /* tree_winter_1 */
-  {48, 48, 23, 43, 8, 416932u}, /* tree_winter_2 */
-  {48, 48, 23, 43, 9, 419252u}, /* tree_winter_3 */
+  {48, 64, 24, 57, 7, 379510u}, /* prop_tent */
+  {48, 64, 24, 57, 8, 382596u}, /* prop_tent_w */
+  {32, 32, 15, 25, 8, 385684u}, /* prop_workbench */
+  {16, 16, 7, 15, 22, 386724u}, /* skin_angel_jerry */
+  {16, 16, 7, 15, 14, 387024u}, /* skin_golden_jerry */
+  {16, 16, 7, 15, 24, 387308u}, /* skin_iron_jerry */
+  {16, 16, 7, 15, 13, 387612u}, /* skin_jerry */
+  {16, 16, 7, 15, 24, 387894u}, /* skin_lord_jerry */
+  {16, 16, 7, 15, 80, 388198u}, /* skin_magma_jerry */
+  {16, 16, 7, 15, 62, 388614u}, /* skin_scuba_jerry */
+  {16, 16, 6, 15, 8, 388994u}, /* toy_balloon_snake */
+  {16, 16, 7, 14, 14, 389266u}, /* toy_beach_ball */
+  {16, 16, 7, 15, 8, 389550u}, /* toy_magic_8_ball */
+  {16, 16, 3, 15, 6, 389822u}, /* toy_plastic_shovel */
+  {16, 16, 7, 15, 15, 390090u}, /* toy_squeaky_mouse */
+  {16, 16, 7, 15, 10, 390376u}, /* toy_white_dice */
+  {48, 64, 23, 46, 9, 390652u}, /* tree_fall_1 */
+  {48, 48, 23, 43, 8, 393742u}, /* tree_fall_2 */
+  {48, 48, 23, 43, 9, 396062u}, /* tree_fall_3 */
+  {48, 64, 23, 46, 9, 398384u}, /* tree_spring_1 */
+  {48, 48, 23, 43, 8, 401474u}, /* tree_spring_2 */
+  {48, 48, 23, 43, 10, 403794u}, /* tree_spring_3 */
+  {48, 64, 23, 46, 9, 406118u}, /* tree_summer_1 */
+  {48, 48, 23, 43, 8, 409208u}, /* tree_summer_2 */
+  {48, 48, 23, 43, 10, 411528u}, /* tree_summer_3 */
+  {48, 64, 23, 46, 9, 413852u}, /* tree_winter_1 */
+  {48, 48, 23, 43, 8, 416942u}, /* tree_winter_2 */
+  {48, 48, 23, 43, 9, 419262u}, /* tree_winter_3 */
 };
 const char *const spr_names[SPR_COUNT] = {
   "b1_2",
@@ -310,6 +311,7 @@ const char *const spr_names[SPR_COUNT] = {
   "prop_car",
   "prop_snowman",
   "prop_tent",
+  "prop_tent_w",
   "prop_workbench",
   "skin_angel_jerry",
   "skin_golden_jerry",

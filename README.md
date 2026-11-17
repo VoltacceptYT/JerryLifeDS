@@ -47,3 +47,6 @@ Game: VoltacceptYT | Music: VO!DWiNG | Built on the JerryClickerDS toolchain
 
 ## Name keyboard
 The on-screen keyboard types lowercase. The **Aa** key toggles a capital for the next letter; it switches on by itself for the first letter and after a space ("Jerry Bob").
+
+## Seasons
+The sandy shore rim is part of the water tiles, so `world.c` tints those non-teal pixels with the seasonal land tint (otherwise the tile next to the water stayed tan in winter). `prop_tent` is the plain tent and `prop_tent_w` the snowy one (the original 96px sprite held both side by side); the winter one is only used in winter.
